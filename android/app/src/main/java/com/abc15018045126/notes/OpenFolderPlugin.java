@@ -1,4 +1,4 @@
-package com.example.app;
+package com.abc15018045126.notes;
 
 import android.content.Context;
 import android.content.Intent;

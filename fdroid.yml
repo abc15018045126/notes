@@ -17,7 +17,7 @@ build:
     - npm run build
     - cd android && ./gradlew assembleRelease
 android:
-  package: com.example.app
+  package: com.abc15018045126.notes
   min_sdk: 21
   target_sdk: 33
 issues: https://github.com/abc15018045126/notes/issues

@@ -1,0 +1,3 @@
+Notes is a lightweight offline note-taking app built with Capacitor.
+It contains no trackers and completely respects your privacy.
+Data is saved locally in the Documents/QuickNotes directory as .txt files, making it easy to back up and sync.
