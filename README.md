@@ -1,38 +1,65 @@
 # Notes
 
-一个基于 Capacitor + React 构建的轻量级离线便签应用。
+A lightweight, offline-first note-taking application built with Capacitor and React.
 
-## 特性
+## Features
 
-- **完全离线**: 所有数据保存在本地，不进行任何网络传输。
-- **隐私保护**: 无追踪器，无广告，不收集任何用户数据。
-- **开放格式**: 笔记以 `.txt` 格式保存在手机的 `Documents/QuickNotes` 目录下，方便使用任何文本编辑器查看、备份或通过同步工具同步。
-- **跨平台**: 使用 Web 技术构建，可打包为 Android、iOS 或作为 Web App 使用。
+- **Completely Offline**: All data is stored locally on your device; no network transmission occurs.
+- **Privacy Guaranteed**: No trackers, no ads, and no user data collection.
+- **Open Format**: Notes are saved as `.txt` files in the `Documents/QuickNotes` directory, making them easily accessible, backable, and syncable with any third-party tools.
+- **Cross-Platform**: Built with modern web technologies, compatible with Android, iOS, and Web.
 
-## 如何使用
+## Usage
 
-1.  **新建**: 点击右下角的 `+` 号。
-2.  **编辑**: 点击列表中的笔记进入编辑模式，实时自动保存。
-3.  **删除**: 在编辑模式下点击垃圾桶图标。
-4.  **搜索**: 在主界面上方可以快速搜索笔记内容。
-5.  **导出/备份**: 笔记直接存储在手机存储中，你可以通过文件管理器直接访问它们。
+1.  **Create**: Tap the `+` button at the bottom right.
+2.  **Edit**: Tap a note in the list to enter editor mode. Changes are saved automatically in real-time.
+3.  **Delete**: Tap the trash icon while in editor mode to delete a note.
+4.  **Search**: Use the search bar on the main screen to quickly find notes by content or title.
+5.  **Export/Backup**: Since notes are stored as plain text files in your local storage, you can access them directly via any file manager.
 
-## 开发与构建
+## Development & Deployment
 
-项目使用 [Capacitor](https://capacitorjs.com/) 将 React 代码打包为原生 Android 应用。
+The project uses [Capacitor](https://capacitorjs.com/) to wrap the React application into a native Android app.
+
+### Local Development
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 构建 Web 资源并同步到安卓
+# Build web assets and sync to Android project
 npm run build
 npx cap sync android
 
-# 运行安卓应用
+# Run on a connected Android device
 npx cap run android
 ```
 
-## 开源协议
+### Automated Release (GitHub Actions)
 
-本项目采用 [GPL-3.0](LICENSE) 协议开源。
+This repository is configured with a GitHub Actions workflow that automatically builds, signs, and publishes a new release whenever a tag is pushed.
+
+To release a new version (e.g., `v1.0.1`):
+
+1.  **Commit your changes:**
+    ```bash
+    git add .
+    git commit -m "Update something"
+    ```
+
+2.  **Push to GitHub:**
+    ```bash
+    git push
+    ```
+
+3.  **Create and push a version tag:**
+    ```bash
+    git tag v1.0.1
+    git push origin v1.0.1
+    ```
+
+Once the tag is pushed, you can monitor the progress in the **Actions** tab of your GitHub repository. When finished, the signed APKs (`arm64-v8a` and `universal`) will be automatically available in the **Releases** section.
+
+## License
+
+This project is open-source and licensed under the [GPL-3.0](LICENSE) License.
