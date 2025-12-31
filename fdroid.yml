@@ -1,0 +1,26 @@
+title: Notes
+summary: 简单的记笔记应用，基于 Capacitor + React。
+description: |
+  Notes 是一个轻量的离线记笔记应用，使用 Capacitor 打包为 Android 应用。
+  应用不包含闭源追踪器；可自托管或使用本地存储。
+license: GPL-3.0-or-later
+source:
+  repo: https://github.com/abc15018045126/notes
+  url: https://github.com/abc15018045126/notes
+  tag: main
+build:
+  max-android: '33'
+  min-android: '21'
+  # 在构建 Android 前先构建 web 资源
+  commands:
+    - npm ci --no-audit --no-fund
+    - npm run build
+    - cd android && ./gradlew assembleRelease
+android:
+  package: com.example.app
+  min_sdk: 21
+  target_sdk: 33
+issues: https://github.com/abc15018045126/notes/issues
+repo: https://github.com/abc15018045126/notes
+# 备注：项目包含对 google-services 插件的可选支持（仅在存在 google-services.json 时启用），
+# 因此默认构建不需要 Google Play 服务或闭源库。
