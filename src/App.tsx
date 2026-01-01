@@ -29,6 +29,14 @@ const App: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
+    const [thumbTop, setThumbTop] = useState(0);
+    const [thumbHeight, setThumbHeight] = useState(20);
+    const [isScrolling, setIsScrolling] = useState(false);
+    const scrollTimeoutRef = useRef<number | null>(null);
+    const isDraggingRef = useRef(false);
+    const startYRef = useRef(0);
+    const startScrollTopRef = useRef(0);
 
     const t = {
         zh: {
@@ -208,6 +216,72 @@ const App: React.FC = () => {
         );
     }, [notes, searchQuery]);
 
+    const handleScroll = useCallback(() => {
+        if (!listRef.current || isDraggingRef.current) return;
+        const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+        if (scrollHeight <= clientHeight) return;
+
+        const ratio = scrollTop / (scrollHeight - clientHeight);
+        const availableSpace = clientHeight - thumbHeight;
+        setThumbTop(ratio * availableSpace);
+
+        setIsScrolling(true);
+        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
+    }, [thumbHeight]);
+
+    useEffect(() => {
+        if (listRef.current) {
+            const { scrollHeight, clientHeight } = listRef.current;
+            setThumbHeight(Math.max((clientHeight / scrollHeight) * clientHeight, 40));
+        }
+    }, [filteredNotes]);
+
+    const handleDragStart = (e: React.MouseEvent | React.TouchEvent, isEditor: boolean = false) => {
+        const target = isEditor ? textareaRef.current : listRef.current;
+        if (!target) return;
+        isDraggingRef.current = true;
+        setIsScrolling(true);
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+        startYRef.current = clientY;
+        startScrollTopRef.current = target.scrollTop;
+        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+
+        const moveHandler = (moveEvent: MouseEvent | TouchEvent) => handleDragMove(moveEvent, isEditor);
+        const endHandler = () => {
+            isDraggingRef.current = false;
+            scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
+            document.removeEventListener('mousemove', moveHandler);
+            document.removeEventListener('mouseup', endHandler);
+            document.removeEventListener('touchmove', moveHandler);
+            document.removeEventListener('touchend', endHandler);
+        };
+
+        document.addEventListener('mousemove', moveHandler);
+        document.addEventListener('mouseup', endHandler);
+        document.addEventListener('touchmove', moveHandler, { passive: false });
+        document.addEventListener('touchend', endHandler);
+    };
+
+    const handleDragMove = (e: MouseEvent | TouchEvent, isEditor: boolean) => {
+        const target = isEditor ? textareaRef.current : listRef.current;
+        if (!isDraggingRef.current || !target) return;
+        e.preventDefault();
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+        const deltaY = clientY - startYRef.current;
+
+        const { scrollHeight, clientHeight } = target;
+        const availableSpace = clientHeight - thumbHeight;
+        const scrollRange = scrollHeight - clientHeight;
+        if (scrollRange <= 0) return;
+
+        const scrollDelta = (deltaY / availableSpace) * scrollRange;
+        target.scrollTop = startScrollTopRef.current + scrollDelta;
+
+        const ratio = target.scrollTop / scrollRange;
+        setThumbTop(ratio * availableSpace);
+    };
+
     if (isLoading) return null;
 
     return (
@@ -230,7 +304,7 @@ const App: React.FC = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <div className="list-container">
+                <div className="list-container" ref={listRef} onScroll={handleScroll}>
                     {filteredNotes.map(note => (
                         <div key={note.id} className="note-card" onClick={() => openNote(note.id)}>
                             <div className="note-title">{note.title}</div>
@@ -240,6 +314,14 @@ const App: React.FC = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div className={`custom-scrollbar ${isScrolling ? 'visible' : ''}`}>
+                    <div
+                        className="scrollbar-thumb"
+                        style={{ top: thumbTop, height: thumbHeight }}
+                        onMouseDown={(e) => handleDragStart(e, false)}
+                        onTouchStart={(e) => handleDragStart(e, false)}
+                    />
                 </div>
                 <button id="fab" onClick={createNewNote}>+</button>
             </div>
@@ -259,7 +341,25 @@ const App: React.FC = () => {
                     placeholder={t.placeholder}
                     defaultValue={curNote?.content || ''}
                     onChange={handleInput}
+                    onScroll={() => {
+                        if (!textareaRef.current || isDraggingRef.current) return;
+                        const { scrollTop, scrollHeight, clientHeight } = textareaRef.current;
+                        if (scrollHeight <= clientHeight) return;
+                        const ratio = scrollTop / (scrollHeight - clientHeight);
+                        setThumbTop(ratio * (clientHeight - thumbHeight));
+                        setIsScrolling(true);
+                        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+                        scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
+                    }}
                 />
+                <div className={`custom-scrollbar ${isScrolling ? 'visible' : ''}`} style={{ top: 'calc(44px + env(safe-area-inset-top))' }}>
+                    <div
+                        className="scrollbar-thumb"
+                        style={{ top: thumbTop, height: thumbHeight }}
+                        onMouseDown={(e) => handleDragStart(e, true)}
+                        onTouchStart={(e) => handleDragStart(e, true)}
+                    />
+                </div>
             </div>
 
             <div className={`view ${view === 'settings' ? '' : 'view-hidden'}`}>
@@ -325,13 +425,20 @@ const App: React.FC = () => {
           background: var(--bg); display: flex; flex-direction: column; transition: transform 0.2s ease-out; z-index: 10;
         }
         .view-hidden { transform: translateX(100%); pointer-events: none; }
-        .list-container { flex: 1; overflow-y: auto; padding: 10px 15px 120px; }
+        .list-container { flex: 1; overflow-y: scroll; padding: 10px 15px 120px; scrollbar-width: none; -ms-overflow-style: none; }
+        .list-container::-webkit-scrollbar { display: none; }
+        
+        .custom-scrollbar { position: absolute; right: 2px; top: 130px; bottom: 0; width: 30px; z-index: 110; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
+        .custom-scrollbar.visible { opacity: 1; }
+        .scrollbar-thumb { position: absolute; right: 4px; width: 6px; background: var(--primary); border-radius: 3px; pointer-events: auto; touch-action: none; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        .scrollbar-thumb::after { content: ""; position: absolute; top: -10px; bottom: -10px; left: -20px; right: -5px; } /* Ghost hitbox */
         .note-card { background: var(--surface); padding: 18px; border-radius: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
         .note-card:active { opacity: 0.6; }
         .note-title { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
         .note-desc { font-size: 0.85rem; color: var(--text-dim); }
         .note-time { font-size: 0.7rem; color: var(--text-dim); text-align: right; margin-top: 8px; font-style: italic; }
-        #editor-area { flex: 1; width: 100%; background: transparent; border: none; color: var(--text); font-size: 1.15rem; line-height: 1.6; padding: 20px; resize: none; outline: none; }
+        #editor-area { flex: 1; width: 100%; background: transparent; border: none; color: var(--text); font-size: 1.15rem; line-height: 1.6; padding: 20px; resize: none; outline: none; scrollbar-width: none; -ms-overflow-style: none; }
+        #editor-area::-webkit-scrollbar { display: none; }
         .btn-icon { padding: 10px; background: transparent; border: none; color: var(--text); display: flex; cursor: pointer; }
         #fab { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 25px; width: 64px; height: 64px; border-radius: 32px; background: var(--primary); color: #fff; border: none; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 100; cursor: pointer; }
         .settings-content { padding: 20px; }

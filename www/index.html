@@ -6,7 +6,13 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>极速便签 Pro</title>
-  <script type="module" crossorigin src="/assets/index-Cripw1S3.js"></script>
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.style.backgroundColor = theme === 'dark' ? '#121212' : '#f8f9fa';
+        })();
+    </script>
+  <script type="module" crossorigin src="/assets/index-DaRlRtXz.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-DyFNOCdn.css">
 </head>
 
