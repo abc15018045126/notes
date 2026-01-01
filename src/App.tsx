@@ -145,7 +145,6 @@ const App: React.FC = () => {
     const openNote = (id: string) => {
         setCurId(id);
         setView('editor');
-        setTimeout(() => textareaRef.current?.focus(), 300);
     };
 
     const closeEditor = useCallback(async () => {
