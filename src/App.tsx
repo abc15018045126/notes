@@ -30,10 +30,14 @@ const App: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
-    const [thumbTop, setThumbTop] = useState(0);
-    const [thumbHeight, setThumbHeight] = useState(20);
-    const [isScrolling, setIsScrolling] = useState(false);
-    const scrollTimeoutRef = useRef<number | null>(null);
+    const [listThumbTop, setListThumbTop] = useState(0);
+    const [listThumbHeight, setListThumbHeight] = useState(40);
+    const [listIsScrolling, setListIsScrolling] = useState(false);
+    const [editorThumbTop, setEditorThumbTop] = useState(0);
+    const [editorThumbHeight, setEditorThumbHeight] = useState(40);
+    const [editorIsScrolling, setEditorIsScrolling] = useState(false);
+    const listScrollTimeoutRef = useRef<number | null>(null);
+    const editorScrollTimeoutRef = useRef<number | null>(null);
     const isDraggingRef = useRef(false);
     const startYRef = useRef(0);
     const startScrollTopRef = useRef(0);
@@ -216,41 +220,75 @@ const App: React.FC = () => {
         );
     }, [notes, searchQuery]);
 
-    const handleScroll = useCallback(() => {
+    const updateScrollbarHeights = useCallback(() => {
+        if (listRef.current) {
+            const { scrollHeight, clientHeight } = listRef.current;
+            setListThumbHeight(Math.max((clientHeight / (scrollHeight || 1)) * clientHeight, 40));
+        }
+        if (textareaRef.current) {
+            const { scrollHeight, clientHeight } = textareaRef.current;
+            setEditorThumbHeight(Math.max((clientHeight / (scrollHeight || 1)) * clientHeight, 40));
+        }
+    }, []);
+
+    useEffect(() => {
+        updateScrollbarHeights();
+    }, [filteredNotes, view, curId, updateScrollbarHeights]);
+
+    const handleListScroll = useCallback(() => {
         if (!listRef.current || isDraggingRef.current) return;
         const { scrollTop, scrollHeight, clientHeight } = listRef.current;
         if (scrollHeight <= clientHeight) return;
-
         const ratio = scrollTop / (scrollHeight - clientHeight);
-        const availableSpace = clientHeight - thumbHeight;
-        setThumbTop(ratio * availableSpace);
+        setListThumbTop(ratio * (clientHeight - listThumbHeight));
+        setListIsScrolling(true);
+        if (listScrollTimeoutRef.current) window.clearTimeout(listScrollTimeoutRef.current);
+        listScrollTimeoutRef.current = window.setTimeout(() => setListIsScrolling(false), 1500);
+    }, [listThumbHeight]);
 
-        setIsScrolling(true);
-        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
-    }, [thumbHeight]);
+    const handleEditorScroll = useCallback(() => {
+        if (!textareaRef.current || isDraggingRef.current) return;
+        const { scrollTop, scrollHeight, clientHeight } = textareaRef.current;
+        if (scrollHeight <= clientHeight) return;
+        const ratio = scrollTop / (scrollHeight - clientHeight);
+        setEditorThumbTop(ratio * (clientHeight - editorThumbHeight));
+        setEditorIsScrolling(true);
+        if (editorScrollTimeoutRef.current) window.clearTimeout(editorScrollTimeoutRef.current);
+        editorScrollTimeoutRef.current = window.setTimeout(() => setEditorIsScrolling(false), 1500);
+    }, [editorThumbHeight]);
 
-    useEffect(() => {
-        if (listRef.current) {
-            const { scrollHeight, clientHeight } = listRef.current;
-            setThumbHeight(Math.max((clientHeight / scrollHeight) * clientHeight, 40));
-        }
-    }, [filteredNotes]);
-
-    const handleDragStart = (e: React.MouseEvent | React.TouchEvent, isEditor: boolean = false) => {
+    const handleDragStart = (e: React.MouseEvent | React.TouchEvent, isEditor: boolean) => {
         const target = isEditor ? textareaRef.current : listRef.current;
         if (!target) return;
         isDraggingRef.current = true;
-        setIsScrolling(true);
+        if (isEditor) setEditorIsScrolling(true); else setListIsScrolling(true);
         const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
         startYRef.current = clientY;
         startScrollTopRef.current = target.scrollTop;
-        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
+        if (isEditor && editorScrollTimeoutRef.current) window.clearTimeout(editorScrollTimeoutRef.current);
+        if (!isEditor && listScrollTimeoutRef.current) window.clearTimeout(listScrollTimeoutRef.current);
 
-        const moveHandler = (moveEvent: MouseEvent | TouchEvent) => handleDragMove(moveEvent, isEditor);
+        const moveHandler = (moveEvent: MouseEvent | TouchEvent) => {
+            if (!isDraggingRef.current || !target) return;
+            moveEvent.preventDefault();
+            const currentY = 'touches' in moveEvent ? moveEvent.touches[0].clientY : (moveEvent as MouseEvent).clientY;
+            const deltaY = currentY - startYRef.current;
+            const { scrollHeight, clientHeight } = target;
+            const thumbH = isEditor ? editorThumbHeight : listThumbHeight;
+            const availableSpace = clientHeight - thumbH;
+            const scrollRange = scrollHeight - clientHeight;
+            if (scrollRange <= 0) return;
+            const scrollDelta = (deltaY / availableSpace) * scrollRange;
+            target.scrollTop = startScrollTopRef.current + scrollDelta;
+
+            const ratio = target.scrollTop / (scrollHeight - clientHeight);
+            if (isEditor) setEditorThumbTop(ratio * availableSpace); else setListThumbTop(ratio * availableSpace);
+        };
+
         const endHandler = () => {
             isDraggingRef.current = false;
-            scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
+            if (isEditor) editorScrollTimeoutRef.current = window.setTimeout(() => setEditorIsScrolling(false), 1500);
+            else listScrollTimeoutRef.current = window.setTimeout(() => setListIsScrolling(false), 1500);
             document.removeEventListener('mousemove', moveHandler);
             document.removeEventListener('mouseup', endHandler);
             document.removeEventListener('touchmove', moveHandler);
@@ -261,25 +299,6 @@ const App: React.FC = () => {
         document.addEventListener('mouseup', endHandler);
         document.addEventListener('touchmove', moveHandler, { passive: false });
         document.addEventListener('touchend', endHandler);
-    };
-
-    const handleDragMove = (e: MouseEvent | TouchEvent, isEditor: boolean) => {
-        const target = isEditor ? textareaRef.current : listRef.current;
-        if (!isDraggingRef.current || !target) return;
-        e.preventDefault();
-        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-        const deltaY = clientY - startYRef.current;
-
-        const { scrollHeight, clientHeight } = target;
-        const availableSpace = clientHeight - thumbHeight;
-        const scrollRange = scrollHeight - clientHeight;
-        if (scrollRange <= 0) return;
-
-        const scrollDelta = (deltaY / availableSpace) * scrollRange;
-        target.scrollTop = startScrollTopRef.current + scrollDelta;
-
-        const ratio = target.scrollTop / scrollRange;
-        setThumbTop(ratio * availableSpace);
     };
 
     if (isLoading) return null;
@@ -304,7 +323,7 @@ const App: React.FC = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <div className="list-container" ref={listRef} onScroll={handleScroll}>
+                <div className="list-container" ref={listRef} onScroll={handleListScroll}>
                     {filteredNotes.map(note => (
                         <div key={note.id} className="note-card" onClick={() => openNote(note.id)}>
                             <div className="note-title">{note.title}</div>
@@ -315,10 +334,10 @@ const App: React.FC = () => {
                         </div>
                     ))}
                 </div>
-                <div className={`custom-scrollbar ${isScrolling ? 'visible' : ''}`}>
+                <div className={`custom-scrollbar ${listIsScrolling ? 'visible' : ''}`}>
                     <div
                         className="scrollbar-thumb"
-                        style={{ top: thumbTop, height: thumbHeight }}
+                        style={{ top: listThumbTop, height: listThumbHeight }}
                         onMouseDown={(e) => handleDragStart(e, false)}
                         onTouchStart={(e) => handleDragStart(e, false)}
                     />
@@ -340,22 +359,13 @@ const App: React.FC = () => {
                     id="editor-area"
                     placeholder={t.placeholder}
                     defaultValue={curNote?.content || ''}
-                    onChange={handleInput}
-                    onScroll={() => {
-                        if (!textareaRef.current || isDraggingRef.current) return;
-                        const { scrollTop, scrollHeight, clientHeight } = textareaRef.current;
-                        if (scrollHeight <= clientHeight) return;
-                        const ratio = scrollTop / (scrollHeight - clientHeight);
-                        setThumbTop(ratio * (clientHeight - thumbHeight));
-                        setIsScrolling(true);
-                        if (scrollTimeoutRef.current) window.clearTimeout(scrollTimeoutRef.current);
-                        scrollTimeoutRef.current = window.setTimeout(() => setIsScrolling(false), 1500);
-                    }}
+                    onChange={(e) => { handleInput(e); updateScrollbarHeights(); }}
+                    onScroll={handleEditorScroll}
                 />
-                <div className={`custom-scrollbar ${isScrolling ? 'visible' : ''}`} style={{ top: 'calc(44px + env(safe-area-inset-top))' }}>
+                <div className={`custom-scrollbar ${editorIsScrolling ? 'visible' : ''}`} style={{ top: 'calc(44px + env(safe-area-inset-top))' }}>
                     <div
                         className="scrollbar-thumb"
-                        style={{ top: thumbTop, height: thumbHeight }}
+                        style={{ top: editorThumbTop, height: editorThumbHeight }}
                         onMouseDown={(e) => handleDragStart(e, true)}
                         onTouchStart={(e) => handleDragStart(e, true)}
                     />
