@@ -440,7 +440,7 @@ const App: React.FC = () => {
         
         .custom-scrollbar { position: absolute; right: 2px; top: 130px; bottom: 0; width: 30px; z-index: 110; pointer-events: none; opacity: 0; transition: opacity 0.3s; }
         .custom-scrollbar.visible { opacity: 1; }
-        .scrollbar-thumb { position: absolute; right: 4px; width: 6px; background: var(--primary); border-radius: 3px; pointer-events: auto; touch-action: none; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+        .scrollbar-thumb { position: absolute; right: 4px; width: 6px; background: #cccccc; border-radius: 3px; pointer-events: auto; touch-action: none; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
         .scrollbar-thumb::after { content: ""; position: absolute; top: -10px; bottom: -10px; left: -20px; right: -5px; } /* Ghost hitbox */
         .note-card { background: var(--surface); padding: 18px; border-radius: 14px; margin-bottom: 12px; border: 1px solid var(--border); }
         .note-card:active { opacity: 0.6; }
@@ -450,7 +450,7 @@ const App: React.FC = () => {
         #editor-area { flex: 1; width: 100%; background: transparent; border: none; color: var(--text); font-size: 1.15rem; line-height: 1.6; padding: 20px; resize: none; outline: none; scrollbar-width: none; -ms-overflow-style: none; }
         #editor-area::-webkit-scrollbar { display: none; }
         .btn-icon { padding: 10px; background: transparent; border: none; color: var(--text); display: flex; cursor: pointer; }
-        #fab { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 25px; width: 64px; height: 64px; border-radius: 32px; background: var(--primary); color: #fff; border: none; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 100; cursor: pointer; }
+        #fab { position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); right: 25px; width: 64px; height: 64px; border-radius: 32px; background: #fff9c4; color: #5d4037; border: none; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; z-index: 100; cursor: pointer; }
         .settings-content { padding: 20px; }
         .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--surface); border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
         .path-label { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; display: block; }
