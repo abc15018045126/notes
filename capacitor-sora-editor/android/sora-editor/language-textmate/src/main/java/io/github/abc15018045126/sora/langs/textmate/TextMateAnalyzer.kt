@@ -91,7 +91,8 @@ class TextMateAnalyzer(
         cachedRegExp = Oniguruma.newRegex("(" + markers.markersStart + ")|(?:" + markers.markersEnd + ")")
     }
 
-    override fun getInitialState(): MyState? = null
+    override val initialState: MyState?
+        get() = null
 
     override fun stateEquals(state: MyState?, another: MyState?): Boolean {
         if (state == null && another == null) {
@@ -103,23 +104,23 @@ class TextMateAnalyzer(
     }
 
     override fun getIndentFor(line: Int): Int {
-        return getState(line).state?.indent ?: 0
+        return getState(line)?.state?.indent ?: 0
     }
 
     override fun getResultFor(line: Int): OnigResult? {
-        return getState(line).state?.foldingCache
+        return getState(line)?.state?.foldingCache
     }
 
-    override fun computeBlocks(text: Content, delegate: CodeBlockAnalyzeDelegate): List<CodeBlock?> {
-        val list = ArrayList<CodeBlock?>()
+    override fun computeBlocks(text: Content, delegate: CodeBlockAnalyzeDelegate): List<CodeBlock>? {
+        val list = ArrayList<CodeBlock>()
         analyzeCodeBlocks(text, list, delegate)
-        if (delegate.isNotCancelled) {
+        if (delegate.isNotCancelled()) {
             withReceiver { r -> r.updateBracketProvider(this, bracketsProvider) }
         }
         return list
     }
 
-    fun analyzeCodeBlocks(model: Content, blocks: ArrayList<CodeBlock?>, delegate: CodeBlockAnalyzeDelegate) {
+    fun analyzeCodeBlocks(model: Content, blocks: ArrayList<CodeBlock>, delegate: CodeBlockAnalyzeDelegate) {
         if (cachedRegExp == null) {
             return
         }
@@ -134,7 +135,7 @@ class TextMateAnalyzer(
             )
             blocks.ensureCapacity(foldingRegions.length())
             for (i in 0 until foldingRegions.length()) {
-                if (!delegate.isNotCancelled) break
+                if (!delegate.isNotCancelled()) break
                 val startLine = foldingRegions.getStartLineNumber(i)
                 val endLine = foldingRegions.getEndLineNumber(i)
                 if (startLine != endLine) {
@@ -155,14 +156,14 @@ class TextMateAnalyzer(
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        managedStyles.setIndentCountMode(true)
+        getManagedStyles().isIndentCountMode = true
     }
 
     @SuppressLint("NewApi")
     @Synchronized
     override fun tokenizeLine(lineC: CharSequence, state: MyState?, lineIndex: Int): IncrementalAnalyzeManager.LineTokenizeResult<MyState?, Span?> {
         val line = if (lineC is ContentLine) lineC.toStringWithNewline() else lineC.toString()
-        val tokens = ArrayList<Span?>()
+        val tokens = ArrayList<Span>()
         val surrogate = StringUtils.checkSurrogate(line)
         val lineTokens = grammar.tokenizeLine2(line, state?.tokenizeState, Duration.ofSeconds(2L))
         val tokensLength = lineTokens.tokens.size / 2
@@ -205,7 +206,7 @@ class TextMateAnalyzer(
                 ).toLong()
             )
 
-            span.setExtra(tokenType)
+            span.extra = tokenType
 
             if ((fontStyle and FontStyle.Underline) != 0) {
                 val color = theme.getColor(foreground)
@@ -258,7 +259,7 @@ class TextMateAnalyzer(
         themeRegistry.removeListener(this)
     }
 
-    override fun generateSpansForLine(tokens: IncrementalAnalyzeManager.LineTokenizeResult<MyState?, Span?>?): List<Span?>? {
+    override fun generateSpansForLine(tokens: IncrementalAnalyzeManager.LineTokenizeResult<MyState?, Span?>): List<Span>? {
         return null
     }
 

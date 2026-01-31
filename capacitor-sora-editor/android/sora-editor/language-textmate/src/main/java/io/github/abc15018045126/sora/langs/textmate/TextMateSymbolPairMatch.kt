@@ -93,7 +93,7 @@ class TextMateSymbolPairMatch(private val language: TextMateLanguage) : SymbolPa
         }
 
         override fun shouldReplace(editor: CodeEditor, contentLine: ContentLine, leftColumn: Int): Boolean {
-            if (editor.cursor.isSelected) {
+            if (editor.cursor.isSelected()) {
                 return isSurroundingPair
             }
             if (isSurroundingPair) {
@@ -153,7 +153,7 @@ class TextMateSymbolPairMatch(private val language: TextMateLanguage) : SymbolPa
         }
 
         override fun shouldDoAutoSurround(content: Content): Boolean {
-            return isSurroundingPair && content.cursor.isSelected
+            return isSurroundingPair && content.getCursor().isSelected()
         }
     }
 

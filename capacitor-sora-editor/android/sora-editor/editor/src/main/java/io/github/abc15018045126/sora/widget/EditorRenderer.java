@@ -361,7 +361,7 @@ public class EditorRenderer {
         var styles = editor.getStyles();
         var spanMap = styles != null ? styles.spans : null;
         var spanReader = spanMap != null ? spanMap.read() : null;
-        spanReader = spanReader == null ? EmptyReader.getInstance() : spanReader;
+        spanReader = spanReader == null ? EmptyReader.INSTANCE : spanReader;
         var row = editor.getLayout().getRowAt(rowIndex);
         var line = content.getLine(row.lineIndex);
         TextRow tr = new TextRow();
@@ -389,7 +389,7 @@ public class EditorRenderer {
         prepareLine(line);
         int columnCount = getColumnCount(line);
         if (spans == null || spans.getSpanCount() <= 0) {
-            spans = EmptyReader.getInstance();
+            spans = EmptyReader.INSTANCE;
         }
         TextRow tr = new TextRow();
         var inlayHints = editor.getInlayHints();
@@ -1339,16 +1339,16 @@ public class EditorRenderer {
                 // Otherwise, the spans of that line can be changed during the inter rendering time
                 // between two **rows** because the spans could have been changed concurrently
                 // See #290
-                reader = spans == null ? EmptyReader.getInstance() : spans.read();
+                reader = spans == null ? EmptyReader.INSTANCE : spans.read();
                 try {
                     reader.moveToLine(line);
                 } catch (Exception e) {
                     Log.w(LOG_TAG, "Failed to read span", e);
-                    reader = EmptyReader.getInstance();
+                    reader = EmptyReader.INSTANCE;
                 }
                 if (reader.getSpanCount() == 0) {
                     // Unacceptable span count, use fallback reader
-                    reader = EmptyReader.getInstance();
+                    reader = EmptyReader.INSTANCE;
                 }
                 if (editor.shouldInitializeNonPrintable()) {
                     long positions = editor.findLeadingAndTrailingWhitespacePos(lineBuf);

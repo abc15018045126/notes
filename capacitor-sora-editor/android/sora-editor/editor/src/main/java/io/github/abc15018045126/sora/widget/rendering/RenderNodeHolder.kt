@@ -91,11 +91,11 @@ class RenderNodeHolder(private val editor: CodeEditor) {
         val node = getNode(line)
         if (node.needsRecord()) {
             val spans = styles?.spans
-            var reader = if (spans == null) EmptyReader.getInstance() else spans.read()
+            var reader = if (spans == null) EmptyReader.INSTANCE else spans.read()
             try {
                 reader.moveToLine(line)
             } catch (e: Exception) {
-                reader = EmptyReader.getInstance()
+                reader = EmptyReader.INSTANCE
             }
             editor.renderer.updateLineDisplayList(node.renderNode, line, reader)
             try {

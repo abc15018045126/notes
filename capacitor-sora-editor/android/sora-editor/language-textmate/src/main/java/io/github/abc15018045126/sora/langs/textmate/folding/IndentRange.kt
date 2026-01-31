@@ -87,7 +87,7 @@ object IndentRange {
         previousRegions.add(PreviousRegion(-1, line, line))
 
         line = model.lineCount - 1
-        while (line >= 0 && delegate.isNotCancelled) {
+        while (line >= 0 && delegate.isNotCancelled()) {
             val indent =
                 helper.getIndentFor(line)//computeIndentLevel(model.getLine(line).getBackingCharArray(), model.getColumnCount(line), tabSize);
             var previous = previousRegions[previousRegions.size - 1]

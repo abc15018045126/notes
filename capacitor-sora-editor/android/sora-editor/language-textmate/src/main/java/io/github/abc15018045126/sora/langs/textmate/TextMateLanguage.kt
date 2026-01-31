@@ -56,7 +56,7 @@ class TextMateLanguage protected constructor(
 
     private fun createAnalyzerAndNewlineHandler(grammar: IGrammar, languageConfiguration: LanguageConfiguration?) {
         textMateAnalyzer?.let {
-            it.setReceiver(null)
+            it.receiver = null
             it.destroy()
         }
         try {
@@ -87,9 +87,8 @@ class TextMateLanguage protected constructor(
         createAnalyzerAndNewlineHandler(grammar, configuration)
     }
 
-    override fun getAnalyzeManager(): AnalyzeManager {
-        return textMateAnalyzer ?: EmptyAnalyzeManager.INSTANCE
-    }
+    override val analyzeManager: AnalyzeManager
+        get() = textMateAnalyzer ?: EmptyLanguage.EmptyAnalyzeManager.INSTANCE
 
     override fun destroy() {
         super.destroy()
@@ -103,9 +102,11 @@ class TextMateLanguage protected constructor(
 
     fun getNewlineHandler(): TextMateNewlineHandler? = newlineHandler
 
-    override fun getSymbolPairs(): TextMateSymbolPairMatch = symbolPairMatch
+    override val symbolPairs: TextMateSymbolPairMatch
+        get() = symbolPairMatch
 
-    override fun getNewlineHandlers(): Array<NewlineHandler>? = _newlineHandlers
+    override val newlineHandlers: Array<NewlineHandler>?
+        get() = _newlineHandlers
 
     override fun requireAutoComplete(
         @NonNull content: ContentReference,
