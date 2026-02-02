@@ -66,11 +66,11 @@ open class EditorContextMenuCreator(val editor: CodeEditor) : EditorBuiltinCompo
         }
     }
 
-    override fun setEnabled(enabled: Boolean) {
-        eventManager.isEnabled = enabled
-    }
-
-    override fun isEnabled() = eventManager.isEnabled
+    override var isEnabled: Boolean
+        get() = eventManager.isEnabled
+        set(value) {
+            eventManager.isEnabled = value
+        }
 
     @DslMarker
     annotation class MenuDslMarker

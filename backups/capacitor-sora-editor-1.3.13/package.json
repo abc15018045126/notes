@@ -1,0 +1,27 @@
+{
+    "name": "capacitor-sora-editor",
+    "version": "1.3.13",
+    "description": "SoraEditor plugin for Capacitor",
+    "main": "dist/plugin.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/esm/index.d.ts",
+    "scripts": {
+        "build": "tsc && rollup -c rollup.config.mjs"
+    },
+    "author": "abc15018045126",
+    "license": "MIT",
+    "devDependencies": {
+        "@capacitor/android": "^8.0.0",
+        "@capacitor/core": "^8.0.0",
+        "rollup": "^4.0.0",
+        "typescript": "^5.0.0"
+    },
+    "peerDependencies": {
+        "@capacitor/core": "^8.0.0"
+    },
+    "capacitor": {
+        "android": {
+            "src": "android"
+        }
+    }
+}

@@ -10,6 +10,7 @@ import io.github.abc15018045126.sora.text.ContentLine
 import io.github.abc15018045126.sora.util.BlockIntList
 import io.github.abc15018045126.sora.util.IntPair
 import io.github.abc15018045126.sora.widget.CodeEditor
+import io.github.abc15018045126.sora.widget.EditorTouchEventHandler
 import java.util.NoSuchElementException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -51,13 +52,17 @@ class LineBreakLayout(editor: CodeEditor, text: Content?) : AbstractLayout(edito
                 if (currentEditor == null || cancelledCount > 0) {
                     return
                 }
-                currentEditor.postInLifecycle {
+                io.github.abc15018045126.sora.util.EditorHandler.post {
+                    if (currentEditor.isReleased) return@post
                     if (this@LineBreakLayout.editor !== currentEditor || reuseCountLocal != reuseCount.get()) {
-                        return@postInLifecycle
+                        return@post
                     }
                     currentEditor.setLayoutBusy(false)
-                    currentEditor.eventHandler.scrollBy(0f, 0f)
+                    val touch: io.github.abc15018045126.sora.widget.EditorTouchEventHandler = currentEditor.touchHandler!!
+                    touch.scrollBy(0f, 0f)
+
                 }
+
             }
         })
         val task = object : LayoutTask<Void?>(monitor) {
@@ -358,5 +363,8 @@ class LineBreakLayout(editor: CodeEditor, text: Content?) : AbstractLayout(edito
         override fun reset() {
             currentRow = initRow
         }
+    }
+    fun findRow(line: Int): Int {
+        return line
     }
 }

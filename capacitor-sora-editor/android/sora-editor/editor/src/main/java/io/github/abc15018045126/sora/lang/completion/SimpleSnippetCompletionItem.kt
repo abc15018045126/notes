@@ -26,7 +26,7 @@ class SimpleSnippetCompletionItem : CompletionItem {
             text.delete(position.index - prefixLength, position.index)
             actionIndex -= prefixLength
         }
-        editor.snippetController.startSnippet(actionIndex, snippet.snippet, selectedText)
+        editor.snippetController?.startSnippet(actionIndex, snippet.snippet, selectedText)
     }
 
     override fun performCompletion(editor: CodeEditor, text: Content, line: Int, column: Int) {

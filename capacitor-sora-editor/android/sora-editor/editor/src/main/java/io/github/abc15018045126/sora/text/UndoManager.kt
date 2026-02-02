@@ -281,7 +281,7 @@ class UndoManager : ContentListener, Parcelable {
         if (!undoEnabled || !content.isCursorCreated() || (replaceMark && deleteAction != null)) {
             return
         }
-        val cursor = content.getCursor()
+        val cursor = content.cursor
         memorizedCursorRange = cursor.getRange()
     }
 

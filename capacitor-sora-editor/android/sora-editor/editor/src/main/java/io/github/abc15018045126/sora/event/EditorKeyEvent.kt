@@ -21,8 +21,8 @@ open class EditorKeyEvent(
     val eventType: Type
 ) : ResultedEvent<Boolean>(editor) {
 
-    private val shiftPressed: Boolean = editor.keyMetaStates.isShiftPressed
-    private val altPressed: Boolean = editor.keyMetaStates.isAltPressed
+    private val shiftPressed: Boolean = editor.getKeyMetaStates().isShiftPressed
+    private val altPressed: Boolean = editor.getKeyMetaStates().isAltPressed
 
     override fun canIntercept(): Boolean {
         return true

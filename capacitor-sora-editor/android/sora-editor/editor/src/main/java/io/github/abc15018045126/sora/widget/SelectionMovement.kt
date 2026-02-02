@@ -22,25 +22,27 @@ enum class SelectionMovement(
 ) {
     /** Move Up */
     UP({ editor, pos ->
-        val newPos = editor.layout.getUpPosition(pos.line, pos.column)
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
+        val newPos = layout.getUpPosition(pos.line, pos.column)
         editor.text.indexer.getCharPosition(IntPair.getFirst(newPos), IntPair.getSecond(newPos))
     }, MovingBasePosition.LEFT_SELECTION),
 
     /** Move Down */
     DOWN({ editor, pos ->
-        val newPos = editor.layout.getDownPosition(pos.line, pos.column)
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
+        val newPos = layout.getDownPosition(pos.line, pos.column)
         editor.text.indexer.getCharPosition(IntPair.getFirst(newPos), IntPair.getSecond(newPos))
     }, MovingBasePosition.RIGHT_SELECTION),
 
     /** Move Left */
     LEFT({ editor, pos ->
-        val newPos = editor.cursor.getLeftOf(pos.toIntPair())
+        val newPos = editor.cursor!!.getLeftOf(pos.toIntPair())
         editor.text.indexer.getCharPosition(IntPair.getFirst(newPos), IntPair.getSecond(newPos))
     }, MovingBasePosition.LEFT_SELECTION),
 
     /** Move Right */
     RIGHT({ editor, pos ->
-        val newPos = editor.cursor.getRightOf(pos.toIntPair())
+        val newPos = editor.cursor!!.getRightOf(pos.toIntPair())
         editor.text.indexer.getCharPosition(IntPair.getFirst(newPos), IntPair.getSecond(newPos))
     }, MovingBasePosition.RIGHT_SELECTION),
 
@@ -58,12 +60,13 @@ enum class SelectionMovement(
 
     /** Move Page Up */
     PAGE_UP({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
         val rowCount = ceil(editor.height / editor.rowHeight.toFloat()).toInt()
         val currIdx = layout.getRowIndexForPosition(pos.index)
         val afterIdx = Numbers.coerceIn(currIdx - rowCount, 0, layout.rowCount - 1)
         val selOffset = pos.column - layout.getRowAt(currIdx).startColumn
         val row = layout.getRowAt(afterIdx)
+
         val line = row.lineIndex
         val column =
             row.startColumn + Numbers.coerceIn(selOffset, 0, row.endColumn - row.startColumn)
@@ -72,12 +75,13 @@ enum class SelectionMovement(
 
     /** Move Page Down */
     PAGE_DOWN({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
         val rowCount = ceil(editor.height / editor.rowHeight.toFloat()).toInt()
         val currIdx = layout.getRowIndexForPosition(pos.index)
         val afterIdx = Numbers.coerceIn(currIdx + rowCount, 0, layout.rowCount - 1)
         val selOffset = pos.column - layout.getRowAt(currIdx).startColumn
         val row = layout.getRowAt(afterIdx)
+
         val line = row.lineIndex
         val column =
             row.startColumn + Numbers.coerceIn(selOffset, 0, row.endColumn - row.startColumn)
@@ -86,11 +90,12 @@ enum class SelectionMovement(
 
     /** Move To Page Top */
     PAGE_TOP({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
         val currIdx = layout.getRowIndexForPosition(pos.index)
         val selOffset = pos.column - layout.getRowAt(currIdx).startColumn
         val afterIdx = editor.firstVisibleRow
         val row = layout.getRowAt(afterIdx)
+
         val line = row.lineIndex
         val column =
             row.startColumn + Numbers.coerceIn(selOffset, 0, row.endColumn - row.startColumn)
@@ -99,11 +104,12 @@ enum class SelectionMovement(
 
     /** Move To Page Bottom */
     PAGE_BOTTOM({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
         val currIdx = layout.getRowIndexForPosition(pos.index)
         val selOffset = pos.column - layout.getRowAt(currIdx).startColumn
         val afterIdx = editor.lastVisibleRow
         val row = layout.getRowAt(afterIdx)
+
         val line = row.lineIndex
         val column =
             row.startColumn + Numbers.coerceIn(selOffset, 0, row.endColumn - row.startColumn)
@@ -112,7 +118,8 @@ enum class SelectionMovement(
 
     /** Move To Physical Line Start */
     LINE_START({ editor, pos ->
-        if (editor.props.enhancedHomeAndEnd) {
+        if (editor.props!!.enhancedHomeAndEnd) {
+
             val column = IntPair.getFirst(
                 TextUtils.findLeadingAndTrailingWhitespacePos(
                     editor.text.getLine(pos.line)
@@ -132,7 +139,8 @@ enum class SelectionMovement(
     /** Move To Physical Line End */
     LINE_END({ editor, pos ->
         val colNum = editor.text.getColumnCount(pos.line)
-        if (editor.props.enhancedHomeAndEnd) {
+        if (editor.props!!.enhancedHomeAndEnd) {
+
             val column = IntPair.getSecond(
                 TextUtils.findLeadingAndTrailingWhitespacePos(
                     editor.text.getLine(pos.line)
@@ -160,7 +168,8 @@ enum class SelectionMovement(
 
     /** Move To Visual Line Start */
     ROW_START({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
+
         val rowIndex = layout.getRowIndexForPosition(pos.index)
         val row = layout.getRowAt(rowIndex)
         val maxColumn =
@@ -169,7 +178,8 @@ enum class SelectionMovement(
             } else {
                 row.endColumn - 1
             }
-        if (editor.props.enhancedHomeAndEnd) {
+        if (editor.props!!.enhancedHomeAndEnd) {
+
             val column = IntPair.getFirst(
                 TextUtils.findLeadingAndTrailingWhitespacePos(
                     editor.text.getLine(pos.line), row.startColumn, maxColumn
@@ -188,7 +198,8 @@ enum class SelectionMovement(
 
     /** Move To Visual Line End */
     ROW_END({ editor, pos ->
-        val layout = editor.layout
+        val layout: io.github.abc15018045126.sora.widget.layout.Layout = editor.layout!!
+
         val rowIndex = layout.getRowIndexForPosition(pos.index)
         val row = layout.getRowAt(rowIndex)
         val maxColumn =
@@ -197,7 +208,8 @@ enum class SelectionMovement(
             } else {
                 row.endColumn - 1
             }
-        if (editor.props.enhancedHomeAndEnd) {
+        if (editor.props!!.enhancedHomeAndEnd) {
+
             val column = IntPair.getSecond(
                 TextUtils.findLeadingAndTrailingWhitespacePos(
                     editor.text.getLine(pos.line), row.startColumn, maxColumn

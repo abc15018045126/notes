@@ -42,17 +42,19 @@ class SoraEditorPlugin : Plugin() {
                     setTypefaceText(Typeface.MONOSPACE)
                     isLineNumberEnabled = showLineNumbers
                     isWordwrap = wordWrap
-                    setEditable(editable)
+                    isEditable = editable
                     
                     // Initial setup for new features
                     setLineSpacing(call.getFloat("lineSpacingExtra") ?: 0f, call.getFloat("lineSpacingMultiplier") ?: 1.0f)
                     setWrapLineSpacing(call.getFloat("wrapLineSpacingExtra") ?: 0f, call.getFloat("wrapLineSpacingMultiplier") ?: 1.0f)
-                    setHighlightCurrentLine(call.getBoolean("highlightCurrentLine") ?: true)
+                    isHighlightCurrentLine = call.getBoolean("highlightCurrentLine") ?: true
+
                     isDisplayLnPanel = call.getBoolean("showScrollLineInfo") ?: true
                     
                     val hPadding = call.getFloat("horizontalPadding") ?: 12f
                     setDividerMargin(0f, hPadding * dpUnit)
-                    setExtraMarginRight(hPadding * dpUnit)
+                    extraMarginRight = hPadding * dpUnit
+
                     setLineNumberMarginLeft(hPadding * dpUnit)
 
                     var startX = 0f
@@ -90,7 +92,7 @@ class SoraEditorPlugin : Plugin() {
 
             editor!!.isLineNumberEnabled = showLineNumbers
             editor!!.isWordwrap = wordWrap
-            editor!!.setEditable(editable)
+            editor!!.isEditable = editable
             
             if (bgColorStr != null) {
                 try {
@@ -142,25 +144,27 @@ class SoraEditorPlugin : Plugin() {
             editor!!.setTextSize(fontSize)
             editor!!.isLineNumberEnabled = showLineNumbers
             editor!!.isWordwrap = wordWrap
-            editor!!.setEditable(editable)
+            editor!!.isEditable = editable
             
             // Re-apply spacing/padding in update
             editor!!.setLineSpacing(call.getFloat("lineSpacingExtra") ?: 0f, call.getFloat("lineSpacingMultiplier") ?: 1.0f)
             editor!!.setWrapLineSpacing(call.getFloat("wrapLineSpacingExtra") ?: 0f, call.getFloat("wrapLineSpacingMultiplier") ?: 1.0f)
-            editor!!.setHighlightCurrentLine(call.getBoolean("highlightCurrentLine") ?: true)
+            editor!!.isHighlightCurrentLine = call.getBoolean("highlightCurrentLine") ?: true
+
             editor!!.isDisplayLnPanel = call.getBoolean("showScrollLineInfo") ?: true
             
             val hPadding = call.getFloat("horizontalPadding") ?: 12f
             editor!!.setDividerMargin(0f, hPadding * editor!!.dpUnit)
-            editor!!.setExtraMarginRight(hPadding * editor!!.dpUnit)
+            editor!!.extraMarginRight = hPadding * editor!!.dpUnit
+
             editor!!.setLineNumberMarginLeft(hPadding * editor!!.dpUnit)
 
             // Handle Font Family
             val fontFamily = call.getString("fontFamily") ?: "Monospace"
             when (fontFamily) {
-                "JetBrains Mono" -> editor!!.typefaceText = Typeface.createFromAsset(context.assets, "JetBrainsMono-Regular.ttf")
-                "Ubuntu" -> editor!!.typefaceText = Typeface.createFromAsset(context.assets, "Ubuntu-Regular.ttf")
-                "Roboto" -> editor!!.typefaceText = Typeface.createFromAsset(context.assets, "Roboto-Regular.ttf")
+                "JetBrains Mono" -> editor!!.setTypefaceText(Typeface.createFromAsset(context.assets, "JetBrainsMono-Regular.ttf"))
+                "Ubuntu" -> editor!!.setTypefaceText(Typeface.createFromAsset(context.assets, "Ubuntu-Regular.ttf"))
+                "Roboto" -> editor!!.setTypefaceText(Typeface.createFromAsset(context.assets, "Roboto-Regular.ttf"))
                 else -> editor!!.setTypefaceText(Typeface.MONOSPACE)
             }
 
@@ -268,9 +272,10 @@ class SoraEditorPlugin : Plugin() {
         val ret = JSObject()
         activity.runOnUiThread {
             if (editor != null) {
-                val cursor = editor!!.cursor
+                val cursor = editor!!.cursor!!
                 ret.put("line", cursor.leftLine)
                 ret.put("column", cursor.leftColumn)
+
             }
             call.resolve(ret)
         }

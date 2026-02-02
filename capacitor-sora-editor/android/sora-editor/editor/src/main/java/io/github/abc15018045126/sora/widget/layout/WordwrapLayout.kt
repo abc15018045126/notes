@@ -12,6 +12,7 @@ import io.github.abc15018045126.sora.text.Content
 import io.github.abc15018045126.sora.text.ContentLine
 import io.github.abc15018045126.sora.util.IntPair
 import io.github.abc15018045126.sora.widget.CodeEditor
+import io.github.abc15018045126.sora.widget.EditorTouchEventHandler
 import java.util.Collections
 import kotlin.math.ceil
 import kotlin.math.max
@@ -45,7 +46,8 @@ class WordwrapLayout(
         if (clearCache) {
             rowTable?.clear()
         }
-        miniGraphWidth = if ((editor.nonPrintablePaintingFlags and CodeEditor.FLAG_DRAW_SOFT_WRAP) != 0) {
+        miniGraphWidth = if ((editor.nonPrintablePaintingFlags and io.github.abc15018045126.sora.widget.CodeEditor.FLAG_DRAW_SOFT_WRAP) != 0) {
+
             editor.renderer.miniGraphWidth
         } else {
             0f
@@ -64,9 +66,10 @@ class WordwrapLayout(
                 val currentEditor = this@WordwrapLayout.editor
                 if (currentEditor != null) {
                     val r2 = results.filterIsInstance<WordwrapResult>().sorted()
-                    currentEditor.postInLifecycle {
+                    io.github.abc15018045126.sora.util.EditorHandler.post {
+                        if (currentEditor.isReleased) return@post
                         if (this@WordwrapLayout.editor !== currentEditor) {
-                            return@postInLifecycle
+                            return@post
                         }
                         val rt = rowTable ?: mutableListOf<RowRegion>().also { rowTable = it }
                         rt.clear()
@@ -75,8 +78,11 @@ class WordwrapLayout(
                         }
                         updateYOffsets(0)
                         currentEditor.setLayoutBusy(false)
-                        currentEditor.eventHandler.scrollBy(0f, 0f)
+                        val touch: io.github.abc15018045126.sora.widget.EditorTouchEventHandler = currentEditor.touchHandler!!
+                        touch.scrollBy(0f, 0f)
+
                     }
+
                 }
             }
         })

@@ -59,7 +59,7 @@ open class EditorSpanInteractionHandler(val editor: CodeEditor) {
 
     init {
         eventManager.subscribeAlways<ClickEvent> { event ->
-            if (!event.isFromMouse || (event.isFromMouse && editor.keyMetaStates.isCtrlPressed)) {
+            if (!event.isFromMouse || (event.isFromMouse && editor.getKeyMetaStates().isCtrlPressed)) {
                 handleInteractionEvent(
                     event,
                     SpanInteractionInfo::isClickable,
@@ -99,7 +99,7 @@ open class EditorSpanInteractionHandler(val editor: CodeEditor) {
             IntPair.getSecond(regionInfo) == IN_BOUND &&
             span != null && spanRange != null
         ) {
-            if (!checkCursorRange || spanRange.isPositionInside(editor.cursor.left())) {
+            if (!checkCursorRange || spanRange.isPositionInside(editor.cursor!!.left())) {
                 span.getSpanExt<SpanInteractionInfo>(SpanExtAttrs.EXT_INTERACTION_INFO)?.let {
                     if (predicate(it)) {
                         if (handler(span, it, spanRange)) {

@@ -1,0 +1,438 @@
+n manifest.
+02-02 11:29:16.762 22680 22680 D BufferQueueConsumer: [](id:589800000046,api:0,p:-1,c:22680) connect: controlledByApp=false
+02-02 11:29:16.819 22680 22901 D BLASTBufferQueue: [VRI[InputMethod]#70](f:0,a:1) acquireNextBufferLocked size=1080x2316 mFrameNumber=1 applyTransaction=true mTimestamp=361912687402416(auto) mPendingTransactions.size=0 graphicBufferId=97409858273704 transform=0
+02-02 11:29:16.827 31414 31414 D InsetsController: show(ime(), fromIme=true)
+02-02 11:29:16.854 22680 22680 E sug_info: SR : true
+02-02 11:29:16.854 22680 22680 E sug_info: TS : false        
+02-02 11:29:16.854 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:16.854 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:16.854 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:16.854 22680 22680 E sug_info: SR : true
+02-02 11:29:16.854 22680 22680 E sug_info: TS : false        
+02-02 11:29:16.854 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:16.854 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:16.855 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:16.896 22680 22680 D BufferQueueConsumer: [](id:589800000047,api:0,p:-1,c:22680) connect: controlledByApp=false
+02-02 11:29:16.906 22680 22901 D BLASTBufferQueue: [VRI[PopupWindow:41021e9]#71](f:0,a:1) acquireNextBufferLocked size=1080x912 mFrameNumber=1 applyTransaction=true mTimestamp=361912775054493(auto) mPendingTransactions.size=0 graphicBufferId=97409858273706 transform=0
+02-02 11:29:16.907 22680 22901 W Parcel  : Expecting binder but got null!
+02-02 11:29:17.459 22680 22680 E sug_info: SR : true
+02-02 11:29:17.459 22680 22680 E sug_info: TS : false        
+02-02 11:29:17.459 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:17.459 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:17.459 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:17.459 22680 22680 E sug_info: SR : true
+02-02 11:29:17.459 22680 22680 E sug_info: TS : false        
+02-02 11:29:17.459 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:17.459 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:17.459 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:17.508 22680 22680 E AbsSoftView: removeCallbacks
+02-02 11:29:17.509 22680 22680 E sug_info: SR : true
+02-02 11:29:17.509 22680 22680 E sug_info: TS : false        
+02-02 11:29:17.509 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:17.509 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:17.510 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:17.510 22680 22680 E sug_info: SR : true
+02-02 11:29:17.510 22680 22680 E sug_info: TS : false        
+02-02 11:29:17.510 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:17.510 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:17.510 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:17.512 22680 22680 E sug_info: SR : true
+02-02 11:29:17.512 22680 22680 E sug_info: TS : false        
+02-02 11:29:17.514 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:17.514 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:17.514 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:17.523 22680 22680 D BLASTBufferQueue: [VRI[PopupWindow:41021e9]#71](f:0,a:2) destructor()
+02-02 11:29:17.523 22680 22680 D BufferQueueConsumer: [VRI[PopupWindow:41021e9]#71(BLAST Consumer)71](id:589800000047,api:0,p:-1,c:22680) disconnect
+02-02 11:29:17.561 22680 22680 W InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+02-02 11:29:17.586 22680 22680 D BufferQueueConsumer: [](id:589800000048,api:0,p:-1,c:22680) connect: controlledByApp=false
+02-02 11:29:17.596 22680 22901 D BLASTBufferQueue: [VRI[PopupWindow:6bd5a9e]#72](f:0,a:1) acquireNextBufferLocked size=1080x2194 mFrameNumber=1 applyTransaction=true mTimestamp=361913466109570(auto) mPendingTransactions.size=0 graphicBufferId=97409858273712 transform=0
+02-02 11:29:17.598 22680 22901 W Parcel  : Expecting binder but got null!
+02-02 11:29:18.047 22680 22680 E sug_info: SR : true
+02-02 11:29:18.047 22680 22680 E sug_info: TS : false
+02-02 11:29:18.048 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:18.048 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:18.048 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:18.054 22680 22680 D BLASTBufferQueue: [VRI[PopupWindow:6bd5a9e]#72](f:0,a:2) destructor()
+02-02 11:29:18.054 22680 22680 D BufferQueueConsumer: [VRI[PopupWindow:6bd5a9e]#72(BLAST Consumer)72](id:589800000048,api:0,p:-1,c:22680) disconnect
+02-02 11:29:18.102 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.102 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.102 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.105 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.105 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.106 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.106 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.109 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.109 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.109 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.120 22680 22680 E sug_info: SR : true
+02-02 11:29:18.121 22680 22680 E sug_info: TS : false        
+02-02 11:29:18.121 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:18.121 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:18.121 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:18.124 22680 22680 E sug_info: SR : true
+02-02 11:29:18.124 22680 22680 E sug_info: TS : false        
+02-02 11:29:18.125 22680 22680 E sug_info: FLAG_SUG_SWITCH: true_xG: 4_FLAG_SUG_MIN_NET_LEVEL: 0
+02-02 11:29:18.125 22680 22680 E sug_info: checkMatch:com.abc15018045126.notes_33554438_32769_null
+02-02 11:29:18.125 22680 22680 E sug_info: true_true_true_true_false_true_false_true
+02-02 11:29:18.129 22680 22680 W InputEventReceiver: Attempted to finish an input event but the input event receiver has already been disposed.
+02-02 11:29:18.139 22680 22680 W View    : requestLayout() improperly called by android.view.View{dede47e V.ED..... ......ID 0,0-1080,1} during layout: running second layout pass     
+02-02 11:29:18.142 31414 31633 D ProfileInstaller: Installing profile for com.abc15018045126.notes
+02-02 11:29:18.160 22680 31634 E TLSDeployUtil:  subPackage isValided . subPkgPath is :/data/user/0/com.baidu.input/files/talos/dpmbundles/baiduinput.rnplugin.goodscircle/goodsshop/1.0.19.15/ subPkgInfo is exist:false successMark:false
+02-02 11:29:18.161 22680 31634 E TLSDeployUtil:  subPackage isValided . subPkgPath is :/data/user/0/com.baidu.input/files/talos/dpmbundles/baiduinput.rnplugin.goodscircle/goodsshop/1.0.19.15/ subPkgInfo is exist:false successMark:false
+02-02 11:29:18.163 22680 31634 D TrafficStats: tagSocket(111) with statsTag=0xffffffff, statsUid=-1
+02-02 11:29:18.163 22680 31634 D Linux   : [Posix_connect Debug]Process com.baidu.input :443
+02-02 11:29:18.166 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.166 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.167 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.167 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.167 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.167 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.168  7940  7971 I GoLog   : from tcp:127.0.0.1:55550 accepted tcp:183.240.98.98:443 [socks -> direct]      
+02-02 11:29:18.173 22680 22680 W Resources: Drawable com.baidu.input:drawable/bg_secondary_tab_common_bg has unresolved theme attributes! Consider using Resources.getDrawable(int, Theme) or Context.getDrawable(int).
+02-02 11:29:18.173 22680 22680 W Resources: java.lang.RuntimeException
+02-02 11:29:18.173 22680 22680 W Resources:     at android.content.res.Resources.getDrawable(Resources.java:1019)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.util.ResUtilsKt.b(Unknown Source:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.palette.IInspirationCorpusPaletteKt$inspirationCorpusPalette$2$1.C(Proguard:6)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardSubTabView.<init>(Proguard:3)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardSubTabView.<init>(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardPanelViewImpl.<init>(Proguard:11)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardPanelViewImpl.<init>(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.di.ClipboardPanelModuleImpl.si(Proguard:1)   
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView$clipboardPanelView$2.b(Unknown Source:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView$clipboardPanelView$2.invoke(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at kotlin.SynchronizedLazyImpl.getValue(Proguard:5)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView.a(Unknown Source:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView.getRealPageView(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$SubPanelViewHolder.<init>(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$InspirationCorpusTabAdapter.w(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$InspirationCorpusTabAdapter.onCreateViewHolder(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Adapter.createViewHolder(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.tryGetViewHolderForPositionByDeadline(Proguard:34)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.getViewForPosition(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.getViewForPosition(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager$LayoutState.next(Proguard:3)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.layoutChunk(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.fill(Proguard:9)      
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.onLayoutChildren(Proguard:65)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.dispatchLayoutStep2(Proguard:12)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.dispatchLayout(Proguard:15)  
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.onLayout(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.viewpager2.widget.ViewPager2.onLayout(Proguard:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.android.internal.policy.DecorView.onLayout(DecorView.java:1081)    
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewRootImpl.performLayout(ViewRootImpl.java:4398)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:3751)    
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:2583)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:9730)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1494) 
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1502) 
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.Choreographer.doCallbacks(Choreographer.java:1113)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.Choreographer.doFrame(Choreographer.java:1016)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1477)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.os.Handler.handleCallback(Handler.java:942)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.os.Handler.dispatchMessage(Handler.java:99)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.os.Looper.loopOnce(Looper.java:223)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.os.Looper.loop(Looper.java:324)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.app.ActivityThread.main(ActivityThread.java:8576)
+02-02 11:29:18.173 22680 22680 W Resources:     at java.lang.reflect.Method.invoke(Native Method)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:582)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1061)
+02-02 11:29:18.173 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.173 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.173 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.173 22680 22680 W Resources: Drawable com.baidu.input:drawable/bg_secondary_tab_common_bg has unresolved theme attributes! Consider using Resources.getDrawable(int, Theme) or Context.getDrawable(int).
+02-02 11:29:18.173 22680 22680 W Resources: java.lang.RuntimeException
+02-02 11:29:18.173 22680 22680 W Resources:     at android.content.res.Resources.getDrawable(Resources.java:1019)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.util.ResUtilsKt.b(Unknown Source:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.palette.IInspirationCorpusPaletteKt$inspirationCorpusPalette$2$1.C(Proguard:6)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.tab.InspirationCorpusSubTabView.updateTabBackground(Unknown Source:4)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.tab.InspirationCorpusSubTabView.updateTurtleSoupScene(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.tab.InspirationCorpusSubTabView.<init>(Proguard:25)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspirationcorpus.common.tab.InspirationCorpusSubTabView.<init>(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardSubTabView.<init>(Proguard:6)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardSubTabView.<init>(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardPanelViewImpl.<init>(Proguard:11)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.panel.view.ClipboardPanelViewImpl.<init>(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.clipboard.di.ClipboardPanelModuleImpl.si(Proguard:1)   
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView$clipboardPanelView$2.b(Unknown Source:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView$clipboardPanelView$2.invoke(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at kotlin.SynchronizedLazyImpl.getValue(Proguard:5)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView.a(Unknown Source:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.page.clipboard.ClipboardPrimaryPageView.getRealPageView(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$SubPanelViewHolder.<init>(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$InspirationCorpusTabAdapter.w(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at com.baidu.input.inspiration_corpus.panel.view.InspirationCorpusPanelView$InspirationCorpusTabAdapter.onCreateViewHolder(Unknown Source:0)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Adapter.createViewHolder(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.tryGetViewHolderForPositionByDeadline(Proguard:34)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.getViewForPosition(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView$Recycler.getViewForPosition(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager$LayoutState.next(Proguard:3)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.layoutChunk(Proguard:1)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.fill(Proguard:9)      
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.LinearLayoutManager.onLayoutChildren(Proguard:65)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.dispatchLayoutStep2(Proguard:12)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.dispatchLayout(Proguard:15)  
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.recyclerview.widget.RecyclerView.onLayout(Proguard:2)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at androidx.viewpager2.widget.ViewPager2.onLayout(Proguard:8)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.173 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1829)      
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:1673)     
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.LinearLayout.onLayout(LinearLayout.java:1582)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.FrameLayout.layoutChildren(FrameLayout.java:332)        
+02-02 11:29:18.174 22680 22680 W Resources:     at android.widget.FrameLayout.onLayout(FrameLayout.java:270)
+02-02 11:29:18.174 22680 22680 W Resources:     at com.android.internal.policy.DecorView.onLayout(DecorView.java:1081)    
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.View.layout(View.java:24214)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewGroup.layout(ViewGroup.java:6513)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewRootImpl.performLayout(ViewRootImpl.java:4398)        
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:3751)    
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:2583)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:9730)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1494) 
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1502) 
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.Choreographer.doCallbacks(Choreographer.java:1113)        
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.Choreographer.doFrame(Choreographer.java:1016)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1477)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.os.Handler.handleCallback(Handler.java:942)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.os.Handler.dispatchMessage(Handler.java:99)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.os.Looper.loopOnce(Looper.java:223)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.os.Looper.loop(Looper.java:324)
+02-02 11:29:18.174 22680 22680 W Resources:     at android.app.ActivityThread.main(ActivityThread.java:8576)
+02-02 11:29:18.174 22680 22680 W Resources:     at java.lang.reflect.Method.invoke(Native Method)
+02-02 11:29:18.174 22680 22680 W Resources:     at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:582)
+02-02 11:29:18.174 22680 22680 W Resources:     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1061)
+02-02 11:29:18.174 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.174 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.174 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.174 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.174 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.176 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.176 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.177 22680 22680 E ThemeUtils: View class com.airbnb.lottie.LottieAnimationView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+02-02 11:29:18.178 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.178 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.179 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.179 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.180 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.180 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.180 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.181 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.184 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.184 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.185 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.185 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.186 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.186 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.187 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.187 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.188 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.188 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.189 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.189 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.189 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.189 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.220 30525 30525 I WifiHAL : Get link layer stats
+02-02 11:29:18.221 30525 30525 I WifiHAL : GetLinkStatsCommand::create
+02-02 11:29:18.221 30525 30525 D android.hardware.wifi@1.0-service-lazy: WifiRequest::create vendor command to iface 33, vendor_id=0x1a11, subcmd=0x1200, res=0
+02-02 11:29:18.221 30525 30525 I android.hardware.wifi@1.0-service-lazy: WifiCommand::requestResponse err=-14
+02-02 11:29:18.221 30525 30525 I WifiHAL : wifi_get_link_stats: result=-1
+02-02 11:29:18.237 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.237 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.237 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.237 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.237 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.237 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.237 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.238 22680 22680 E ThemeUtils: View class com.baidu.input.inspirationcorpus.common.widget.InspirationCorpusViewMoreTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+02-02 11:29:18.239 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.239 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.239 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.240 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.240 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.241 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.241 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.241 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.241 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.242 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.242 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.243 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.243 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.244 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.244 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.245 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.245 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.246 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.246 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.248 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.248 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.248 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.248 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.249 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.249 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.258 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.258 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.259 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.259 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.259 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.259 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.259 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.259 22680 22680 E ThemeUtils: View class com.baidu.input.inspirationcorpus.common.widget.InspirationCorpusViewMoreTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+02-02 11:29:18.260 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.260 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.261 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.261 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.261 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.261 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.261 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.262 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.262 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.262 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.262 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.263 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.263 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.263 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.263 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.263 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.263 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.264 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.264 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.265 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.265 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.265 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.265 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.266 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.266 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.270 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.270 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.270 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.270 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.270 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.270 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.271 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.271 22680 22680 E ThemeUtils: View class com.baidu.input.inspirationcorpus.common.widget.InspirationCorpusViewMoreTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+02-02 11:29:18.272 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.272 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.272 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.272 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.272 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.273 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.273 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.273 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.273 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.274 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.274 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.274 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.274 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.274 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.275 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.275 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.275 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.275 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.275 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.276 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.276 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.277 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.277 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.277 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.277 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.282 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.282 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.282 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.282 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.283 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.283 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.283 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.283 22680 22680 E ThemeUtils: View class com.baidu.input.inspirationcorpus.common.widget.InspirationCorpusViewMoreTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant).
+02-02 11:29:18.284 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.284 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.284 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.285 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.285 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.285 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.285 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.285 22680 22688 I com.baidu.input: Background concurrent copying GC freed 138418(11MB) AllocSpace objects, 23(672KB) LOS objects, 49% free, 20MB(RS:15MB + LOS:5920KB)/41MB, paused 116us,113us total 130.204ms
+02-02 11:29:18.286 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.286 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.286 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.286 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.286 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.286 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.287 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.287 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.287 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.287 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.287 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.287 22680 22680 E ThemeUtils: View class com.baidu.input.acgfont.ImeTextView is an AppCompat widget that can only be used with a Theme.AppCompat theme (or descendant). 
+02-02 11:29:18.288 22680 22680 E VivoConfigStore: key:vivo.software.romstyle isCached is true and value is true
+02-02 11:29:18.288 22680 22680 E VivoConfigStore: key:vivo.software.springeffect isCached is true and value is true       
+02-02 11:29:18.288 22680 22680 D SBE-DEBUG: init scroll scenario
+02-02 11:29:18.369  7940 20506 I GoLog   : from 127.0.0.1:44366 accepted udp:8.8.8.8:53 [dns-in -> dns-out]
+02-02 11:29:18.997 31414 31414 D EditorControl: Searching: 李.峰
+02-02 11:29:19.021 31414 31648 D EditorSearcher:  on text len: 1278097
+02-02 11:29:19.025 31414 31648 D EditorSearcher: Regex search done. Found matches: 0, Added results: 0
+02-02 11:29:19.041 31414 31414 D EditorSearcher: Posting results: 0
+02-02 11:29:21.234 30525 30525 I WifiHAL : Get link layer stats
+02-02 11:29:21.234 30525 30525 I WifiHAL : GetLinkStatsCommand::create
+02-02 11:29:21.234 30525 30525 D android.hardware.wifi@1.0-service-lazy: WifiRequest::create vendor command to iface 33, vendor_id=0x1a11, subcmd=0x1200, res=0
+02-02 11:29:21.234 30525 30525 I android.hardware.wifi@1.0-service-lazy: WifiCommand::requestResponse err=-14
+02-02 11:29:21.234 30525 30525 I WifiHAL : wifi_get_link_stats: result=-1 

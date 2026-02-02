@@ -22,7 +22,7 @@ abstract class AbstractLayout(
 ) : Layout {
 
     protected open fun getSpans(line: Int): List<Span> {
-        return editor?.getSpansForLine(line) ?: emptyList()
+        return editor?.getSpansForLine(line)?.filterNotNull() ?: emptyList()
     }
 
     internal open fun getInlayHints(line: Int): List<InlayHint> {

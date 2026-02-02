@@ -38,7 +38,7 @@ fun SoraEditorView(
                 setTypefaceText(Typeface.MONOSPACE)
                 isLineNumberEnabled = showLineNumbers
                 isWordwrap = wordWrap
-                setEditable(editable)
+                isEditable = editable
                 setText(content)
                 
                 // Set background color
@@ -49,15 +49,15 @@ fun SoraEditorView(
                     val b = Color.blue(color)
                     val luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0
                     
-                    colorScheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
-                    colorScheme.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
+                    colorScheme?.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
+                    colorScheme?.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
                     
                     if (luminance < 0.5) {
-                        colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, Color.WHITE)
-                        colorScheme.setColor(EditorColorScheme.LINE_NUMBER, Color.GRAY)
+                        colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, Color.WHITE)
+                        colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, Color.GRAY)
                     } else {
-                        colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, Color.BLACK)
-                        colorScheme.setColor(EditorColorScheme.LINE_NUMBER, Color.DKGRAY)
+                        colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, Color.BLACK)
+                        colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, Color.DKGRAY)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -70,7 +70,7 @@ fun SoraEditorView(
             view.setTextSize(fontSize)
             view.isLineNumberEnabled = showLineNumbers
             view.isWordwrap = wordWrap
-            view.setEditable(editable)
+            view.isEditable = editable
             
             // Only update text if it's different to avoid cursor jump
             if (view.text.toString() != content) {
@@ -85,15 +85,15 @@ fun SoraEditorView(
                 val b = Color.blue(color)
                 val luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0
                 
-                view.colorScheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
-                view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
+                view.colorScheme?.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
+                view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
                 
                 if (luminance < 0.5) {
-                    view.colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, Color.WHITE)
-                    view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER, Color.GRAY)
+                    view.colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, Color.WHITE)
+                    view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, Color.GRAY)
                 } else {
-                    view.colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, Color.BLACK)
-                    view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER, Color.DKGRAY)
+                    view.colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, Color.BLACK)
+                    view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, Color.DKGRAY)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

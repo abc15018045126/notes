@@ -198,7 +198,7 @@ abstract class AsyncIncrementalAnalyzeManager<S, T> : BaseAnalyzeManager(), Incr
                 return currentLine?.spans?.get(index) ?: SpanFactory.obtainNoExt(0, EditorColorScheme.TEXT_NORMAL.toLong())
             }
 
-            override fun getSpansOnLine(line: Int): List<Span>? {
+            override fun getSpansOnLine(line: Int): List<Span> {
                 var locked = false
                 try {
                     locked = lock.tryLock(1, TimeUnit.MILLISECONDS)

@@ -93,7 +93,8 @@ class TextMateSymbolPairMatch(private val language: TextMateLanguage) : SymbolPa
         }
 
         override fun shouldReplace(editor: CodeEditor, contentLine: ContentLine, leftColumn: Int): Boolean {
-            if (editor.cursor.isSelected()) {
+            if (editor.cursor!!.isSelected()) {
+
                 return isSurroundingPair
             }
             if (isSurroundingPair) {
@@ -102,12 +103,14 @@ class TextMateSymbolPairMatch(private val language: TextMateLanguage) : SymbolPa
 
             val array = notInTokenTypeArray ?: return true
 
-            val cursor = editor.cursor
+            val cursor = editor.cursor!!
             val currentLine = cursor.leftLine
             val currentColumn = cursor.leftColumn
 
+
             val spansOnCurrentLine = editor.getSpansForLine(currentLine) ?: return true
-            val currentSpan = binarySearchSpan(spansOnCurrentLine, currentColumn) ?: return true
+            val currentSpan = binarySearchSpan(spansOnCurrentLine.filterNotNull(), currentColumn) ?: return true
+
             val extra = currentSpan.extra
 
             if (extra is Int) {
@@ -153,7 +156,7 @@ class TextMateSymbolPairMatch(private val language: TextMateLanguage) : SymbolPa
         }
 
         override fun shouldDoAutoSurround(content: Content): Boolean {
-            return isSurroundingPair && content.getCursor().isSelected()
+            return isSurroundingPair && content.cursor.isSelected()
         }
     }
 

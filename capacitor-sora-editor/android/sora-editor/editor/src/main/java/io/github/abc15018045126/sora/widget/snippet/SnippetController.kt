@@ -165,7 +165,7 @@ class SnippetController(private val editor: CodeEditor) {
                         if (exitOnEnd) {
                             stopSnippet()
                         } else if (hasChangedText) {
-                            editor.getComponent<EditorAutoCompletion>().requireCompletion()
+                            editor.getComponent<EditorAutoCompletion>()?.requireCompletion()
                         }
                     } else {
                         stopSnippet()
@@ -346,7 +346,8 @@ class SnippetController(private val editor: CodeEditor) {
                         sb.append(it)
                         first = false
                     } else {
-                        sb.append(editor.lineSeparator.content)
+                        sb.append(editor.lineSeparator!!.content)
+
                             .append(indentText)
                             .append(it)
                     }

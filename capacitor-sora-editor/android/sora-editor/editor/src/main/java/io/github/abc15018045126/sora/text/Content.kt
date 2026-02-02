@@ -682,12 +682,13 @@ open class Content : CharSequence {
         }
     }
 
-    fun getCursor(): Cursor {
-        if (_cursor == null) {
-            _cursor = Cursor(this)
+    val cursor: Cursor
+        get() {
+            if (_cursor == null) {
+                _cursor = Cursor(this)
+            }
+            return _cursor!!
         }
-        return _cursor!!
-    }
 
     fun isCursorCreated(): Boolean = _cursor != null
 

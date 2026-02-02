@@ -25,9 +25,10 @@ class LongArrayList {
     /**
      * Get length of the list
      */
-    fun size(): Int {
-        return length
-    }
+    val size: Int
+        get() = length
+
+    fun size(): Int = length
 
     /**
      * Set element at given index to {@code value}

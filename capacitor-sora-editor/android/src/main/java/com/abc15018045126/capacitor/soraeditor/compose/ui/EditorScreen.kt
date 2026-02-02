@@ -67,9 +67,10 @@ class EditorControl {
     fun getCurrentCursorPosition(): Int {
         val editor = this.editor ?: return 0
         try {
-            val cursor = editor.cursor
+            val cursor = editor.cursor!!
             val targetLine = cursor.leftLine
             val targetCol = cursor.leftColumn
+
             val text = editor.text.toString()
             
             var idx = 0
@@ -266,16 +267,17 @@ fun SoraEditorView(
                 setTextSize(fontSize)
                 isLineNumberEnabled = showLineNumbers
                 isWordwrap = wordWrap
-                setEditable(editable)
-                setHighlightCurrentLine(highlightCurrentLine)
+                isEditable = editable
+                isHighlightCurrentLine = highlightCurrentLine
                 setCursorWidth(cursorWidth * dpUnit / 2f)
                 isDisplayLnPanel = showScrollLineInfo
+
                 
                 // Set font family
                 when (fontFamily) {
-                    "JetBrains Mono" -> typefaceText = Typeface.createFromAsset(context.assets, "JetBrainsMono-Regular.ttf")
-                    "Ubuntu" -> typefaceText = Typeface.createFromAsset(context.assets, "Ubuntu-Regular.ttf")
-                    "Roboto" -> typefaceText = Typeface.createFromAsset(context.assets, "Roboto-Regular.ttf")
+                    "JetBrains Mono" -> setTypefaceText(Typeface.createFromAsset(context.assets, "JetBrainsMono-Regular.ttf"))
+                    "Ubuntu" -> setTypefaceText(Typeface.createFromAsset(context.assets, "Ubuntu-Regular.ttf"))
+                    "Roboto" -> setTypefaceText(Typeface.createFromAsset(context.assets, "Roboto-Regular.ttf"))
                     else -> setTypefaceText(Typeface.MONOSPACE)
                 }
                 
@@ -296,7 +298,7 @@ fun SoraEditorView(
                 }
                 
                 subscribeEvent(io.github.abc15018045126.sora.event.SelectionChangeEvent::class.java) { _, _ ->
-                     val cursor = this.cursor
+                     val cursor = this.cursor!!
                      val line = cursor.leftLine
                      val col = cursor.leftColumn
                      
@@ -345,8 +347,8 @@ fun SoraEditorView(
                 setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
                 setWrapLineSpacing(wrapLineSpacingExtra, wrapLineSpacingMultiplier)
                 val dp = dpUnit
-                setDividerMargin(0f, horizontalPadding * dp)
-                setExtraMarginRight(horizontalPadding * dp)
+                dividerMarginRight = horizontalPadding * dp
+                extraMarginRight = horizontalPadding * dp
                 setLineNumberMarginLeft(horizontalPadding * dp)
 
                 try {
@@ -356,43 +358,43 @@ fun SoraEditorView(
                     val b = android.graphics.Color.blue(color)
                     val luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0
                     
-                    colorScheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
-                    colorScheme.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
+                    colorScheme?.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
+                    colorScheme?.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
                     
                     if (luminance < 0.5) {
-                        colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.WHITE)
-                        colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.GRAY)
+                        colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.WHITE)
+                        colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.GRAY)
                     } else {
-                        colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.BLACK)
-                        colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.DKGRAY)
+                        colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.BLACK)
+                        colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.DKGRAY)
                     }
 
                     try {
                         val searchMatchColor = android.graphics.Color.parseColor(searchMatchBackgroundColor)
-                        colorScheme.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, searchMatchColor)
+                        colorScheme?.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, searchMatchColor)
                     } catch (e: Exception) {
-                        colorScheme.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, 0xffffff00.toInt())
+                        colorScheme?.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, 0xffffff00.toInt())
                     }
 
                     try {
                         val currentLineColor = android.graphics.Color.parseColor(currentLineBackgroundColor)
-                        colorScheme.setColor(EditorColorScheme.CURRENT_LINE, currentLineColor)
+                        colorScheme?.setColor(EditorColorScheme.CURRENT_LINE, currentLineColor)
                     } catch (e: Exception) {
-                        colorScheme.setColor(EditorColorScheme.CURRENT_LINE, 0x10000000)
+                        colorScheme?.setColor(EditorColorScheme.CURRENT_LINE, 0x10000000)
                     }
 
                     try {
                         val cColor = android.graphics.Color.parseColor(cursorColor)
-                        colorScheme.setColor(EditorColorScheme.SELECTION_INSERT, cColor)
+                        colorScheme?.setColor(EditorColorScheme.SELECTION_INSERT, cColor)
                     } catch (e: Exception) {
-                        colorScheme.setColor(EditorColorScheme.SELECTION_INSERT, 0xFF000000.toInt())
+                        colorScheme?.setColor(EditorColorScheme.SELECTION_INSERT, 0xFF000000.toInt())
                     }
 
                     try {
                         val hColor = android.graphics.Color.parseColor(handleColor)
-                        colorScheme.setColor(EditorColorScheme.SELECTION_HANDLE, hColor)
+                        colorScheme?.setColor(EditorColorScheme.SELECTION_HANDLE, hColor)
                     } catch (e: Exception) {
-                        colorScheme.setColor(EditorColorScheme.SELECTION_HANDLE, 0xFF000000.toInt())
+                        colorScheme?.setColor(EditorColorScheme.SELECTION_HANDLE, 0xFF000000.toInt())
                     }
 
                     setSelectionHandleStyle(when (handleStyle) {
@@ -403,11 +405,11 @@ fun SoraEditorView(
 
                     try {
                         val sColor = android.graphics.Color.parseColor(scrollbarColor)
-                        colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB, sColor)
-                        colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, sColor)
+                        colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB, sColor)
+                        colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, sColor)
                     } catch (e: Exception) {
-                        colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB, 0xFFA0888888.toInt())
-                        colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, 0xFFA0888888.toInt())
+                        colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB, 0xFFA0888888.toInt())
+                        colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, 0xFFA0888888.toInt())
                     }
 
                     if (scrollbarStyle == "rounded") {
@@ -417,11 +419,11 @@ fun SoraEditorView(
                             cornerRadius = 100f // Large radius for fully rounded ends
                             setColor(sColor)
                         }
-                        renderer.setVerticalScrollbarThumbDrawable(drawable)
-                        renderer.setHorizontalScrollbarThumbDrawable(drawable)
+                        renderer?.setVerticalScrollbarThumbDrawable(drawable)
+                        renderer?.setHorizontalScrollbarThumbDrawable(drawable)
                     } else {
-                        renderer.setVerticalScrollbarThumbDrawable(null)
-                        renderer.setHorizontalScrollbarThumbDrawable(null)
+                        renderer?.setVerticalScrollbarThumbDrawable(null)
+                        renderer?.setHorizontalScrollbarThumbDrawable(null)
                     }
                 } catch (e: Exception) {}
                 
@@ -454,11 +456,11 @@ fun SoraEditorView(
                 lastAppliedWordWrap = wordWrap
             }
             if (lastAppliedEditable != editable) {
-                view.setEditable(editable)
+                view.isEditable = editable
                 lastAppliedEditable = editable
             }
             if (lastAppliedHighlightCurrentLine != highlightCurrentLine) {
-                view.setHighlightCurrentLine(highlightCurrentLine)
+                view.isHighlightCurrentLine = highlightCurrentLine
                 lastAppliedHighlightCurrentLine = highlightCurrentLine
             }
             val targetCursorWidth = cursorWidth * view.dpUnit / 2f
@@ -475,9 +477,9 @@ fun SoraEditorView(
             if (lastAppliedFontFamily != fontFamily) {
                 val assets = view.context.assets
                 when (fontFamily) {
-                    "JetBrains Mono" -> view.typefaceText = Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf")
-                    "Ubuntu" -> view.typefaceText = Typeface.createFromAsset(assets, "Ubuntu-Regular.ttf")
-                    "Roboto" -> view.typefaceText = Typeface.createFromAsset(assets, "Roboto-Regular.ttf")
+                    "JetBrains Mono" -> view.setTypefaceText(Typeface.createFromAsset(assets, "JetBrainsMono-Regular.ttf"))
+                    "Ubuntu" -> view.setTypefaceText(Typeface.createFromAsset(assets, "Ubuntu-Regular.ttf"))
+                    "Roboto" -> view.setTypefaceText(Typeface.createFromAsset(assets, "Roboto-Regular.ttf"))
                     else -> view.setTypefaceText(Typeface.MONOSPACE)
                 }
                 lastAppliedFontFamily = fontFamily
@@ -501,49 +503,49 @@ fun SoraEditorView(
             try {
                 val sColor = android.graphics.Color.parseColor(scrollbarColor)
                 if (view.colorScheme.getColor(EditorColorScheme.SCROLL_BAR_THUMB) != sColor) {
-                    view.colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB, sColor)
-                    view.colorScheme.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, sColor)
+                    view.colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB, sColor)
+                    view.colorScheme?.setColor(EditorColorScheme.SCROLL_BAR_THUMB_PRESSED, sColor)
                 }
             } catch (e: Exception) {}
             
             try {
                 val color = android.graphics.Color.parseColor(backgroundColor)
-                if (view.colorScheme.getColor(EditorColorScheme.WHOLE_BACKGROUND) != color) {
+                if (view.colorScheme?.getColor(EditorColorScheme.WHOLE_BACKGROUND) != color) {
                     val r = android.graphics.Color.red(color)
                     val g = android.graphics.Color.green(color)
                     val b = android.graphics.Color.blue(color)
                     val luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0
                     
-                    view.colorScheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
-                    view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
+                    view.colorScheme?.setColor(EditorColorScheme.WHOLE_BACKGROUND, color)
+                    view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, color)
                     
                     if (luminance < 0.5) {
-                        view.colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.WHITE)
-                        view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.GRAY)
+                        view.colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.WHITE)
+                        view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.GRAY)
                     } else {
-                        view.colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.BLACK)
-                        view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.DKGRAY)
+                        view.colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.BLACK)
+                        view.colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.DKGRAY)
                     }
                 }
 
                 val searchMatchColor = try { android.graphics.Color.parseColor(searchMatchBackgroundColor) } catch (e: Exception) { 0xffffff00.toInt() }
-                if (view.colorScheme.getColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND) != searchMatchColor) {
-                    view.colorScheme.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, searchMatchColor)
+                if (view.colorScheme?.getColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND) != searchMatchColor) {
+                    view.colorScheme?.setColor(EditorColorScheme.MATCHED_TEXT_BACKGROUND, searchMatchColor)
                 }
 
                 val currentLineColor = try { android.graphics.Color.parseColor(currentLineBackgroundColor) } catch (e: Exception) { 0x10000000 }
-                if (view.colorScheme.getColor(EditorColorScheme.CURRENT_LINE) != currentLineColor) {
-                    view.colorScheme.setColor(EditorColorScheme.CURRENT_LINE, currentLineColor)
+                if (view.colorScheme?.getColor(EditorColorScheme.CURRENT_LINE) != currentLineColor) {
+                    view.colorScheme?.setColor(EditorColorScheme.CURRENT_LINE, currentLineColor)
                 }
 
                 val cColor = try { android.graphics.Color.parseColor(cursorColor) } catch (e: Exception) { 0xFF000000.toInt() }
-                if (view.colorScheme.getColor(EditorColorScheme.SELECTION_INSERT) != cColor) {
-                    view.colorScheme.setColor(EditorColorScheme.SELECTION_INSERT, cColor)
+                if (view.colorScheme?.getColor(EditorColorScheme.SELECTION_INSERT) != cColor) {
+                    view.colorScheme?.setColor(EditorColorScheme.SELECTION_INSERT, cColor)
                 }
 
                 val hColor = try { android.graphics.Color.parseColor(handleColor) } catch (e: Exception) { 0xFF000000.toInt() }
-                if (view.colorScheme.getColor(EditorColorScheme.SELECTION_HANDLE) != hColor) {
-                    view.colorScheme.setColor(EditorColorScheme.SELECTION_HANDLE, hColor)
+                if (view.colorScheme?.getColor(EditorColorScheme.SELECTION_HANDLE) != hColor) {
+                    view.colorScheme?.setColor(EditorColorScheme.SELECTION_HANDLE, hColor)
                 }
 
                 if (lastAppliedHandleStyle != handleStyle) {
@@ -562,11 +564,11 @@ fun SoraEditorView(
                         cornerRadius = 100f
                         setColor(sColor)
                     }
-                    view.renderer.setVerticalScrollbarThumbDrawable(drawable)
-                    view.renderer.setHorizontalScrollbarThumbDrawable(drawable)
+                    view.renderer?.setVerticalScrollbarThumbDrawable(drawable)
+                    view.renderer?.setHorizontalScrollbarThumbDrawable(drawable)
                 } else {
-                    view.renderer.setVerticalScrollbarThumbDrawable(null)
-                    view.renderer.setHorizontalScrollbarThumbDrawable(null)
+                    view.renderer?.setVerticalScrollbarThumbDrawable(null)
+                    view.renderer?.setHorizontalScrollbarThumbDrawable(null)
                 }
             } catch (e: Exception) {}
         },

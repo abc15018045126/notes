@@ -61,9 +61,10 @@ internal class CursorBlink(
         if (valid && period > 0) {
             if (System.currentTimeMillis() - lastSelectionModificationTime >= period * 2L) {
                 visibility = !visibility
-                val left = editor.cursor.left()
-                buffer = editor.layout.getCharLayoutOffset(left.line, left.column, buffer)
-                if (!editor.cursor.isSelected() && isSelectionVisible()) {
+                val c = editor.cursor!!
+                val left = c.left()
+                buffer = editor.layout!!.getCharLayoutOffset(left.line, left.column, buffer)
+                if (!c.isSelected() && isSelectionVisible()) {
                     editor.postInvalidate()
                 }
             } else {

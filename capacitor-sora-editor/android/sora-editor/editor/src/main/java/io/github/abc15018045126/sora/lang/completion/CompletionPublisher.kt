@@ -52,6 +52,12 @@ class CompletionPublisher(
     private var invalid = false
 
     /**
+     * Check whether the completion is cancelled
+     */
+    val isCancelled: Boolean
+        get() = invalid
+
+    /**
      * Checks whether there is data
      */
     fun hasData(): Boolean {
