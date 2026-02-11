@@ -19,7 +19,7 @@
   ~     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
   ~     USA
   ~
-  ~     Please contact abc15018045126 by email 2073412493@qq.com if you need
+  ~     Please contact abc15018045126 by email abc15018045126@gmail.com if you need
   ~     additional information or have any questions
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
@@ -37,6 +37,7 @@
 		android:id="@+id/panel_hv">
 
 		<LinearLayout
+			android:id="@+id/panel_btn_container"
 			android:layout_height="match_parent"
 			android:layout_width="wrap_content"
 			android:orientation="horizontal"

@@ -52,6 +52,16 @@ class EditorTextActionWindow(editor: CodeEditor) :
         private const val CHECK_FOR_DISMISS_INTERVAL: Long = 100
     }
 
+    private val btnMap by lazy {
+        mapOf(
+            "select_all" to selectAllBtn,
+            "cut" to cutBtn,
+            "copy" to copyBtn,
+            "paste" to pasteBtn,
+            "long_select" to longSelectBtn
+        )
+    }
+
     init {
         @SuppressLint("InflateParams")
         val root = LayoutInflater.from(editor.context).inflate(R.layout.text_compose_panel, null)
@@ -74,6 +84,24 @@ class EditorTextActionWindow(editor: CodeEditor) :
         popup.animationStyle = R.style.text_action_popup_animation
 
         subscribeEvents()
+        updateMenuOrderAndVisibility()
+    }
+
+
+    fun updateMenuOrderAndVisibility() {
+        val order = editor.textActionMenuOrder ?: listOf("select_all", "copy", "paste", "long_select", "cut")
+        val hidden = editor.textActionMenuHidden ?: emptyList()
+
+        val container = rootView.findViewById<android.widget.LinearLayout>(R.id.panel_btn_container)
+        container?.removeAllViews()
+
+        for (id in order) {
+            if (id !in hidden) {
+                btnMap[id]?.let {
+                    container?.addView(it)
+                }
+            }
+        }
     }
 
     private fun applyColorFilter(btn: ImageButton, color: Int) {
@@ -255,6 +283,7 @@ class EditorTextActionWindow(editor: CodeEditor) :
     }
 
     fun displayWindow() {
+        updateMenuOrderAndVisibility()
         updateBtnState()
         var top: Int
         val cursor = editor.cursor

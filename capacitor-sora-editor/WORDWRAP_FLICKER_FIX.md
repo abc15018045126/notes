@@ -198,8 +198,71 @@ The essence of this issue is a **performance problem caused by unnecessary state
 
 Successfully resolved the flickering issue in word wrap mode while maintaining full functionality.
 
+## New Issue: Initial Word Wrap "Jump" (2026-02-02)
+
+### Issue Description
+When opening the editor with word wrap enabled, the text initially displays as unwrapped (single long lines) for a split second before "jumping" into the wrapped state. This is jarring for the user.
+
+### Root Cause
+`WordwrapLayout` calculates wrap points asynchronously in a background thread to avoid blocking the UI thread for large files. During this calculation period, `WordwrapLayout` returns the full lines (unwrapped) to the editor's renderer, causing the initial "unwrapped" flicker.
+
+### Fix Solution
+Modified `WordwrapLayout.kt` to:
+1. **Synchronous Preview**: In the constructor, if the view width is known (>0), synchronously break the first 100 lines. This ensures the initially visible area is wrapped immediately.
+2. **Synchronous Small Files**: If the total line count is small (<= 200 lines), perform the entire wrap calculation synchronously on the UI thread. For small files, this takes negligible time (~1-5ms) and completely eliminates the background task overhead and flicker.
+3. **Maintained Async for Large Files**: Files larger than 200 lines still use the background thread for the full calculation, but benefit from the 100-line synchronous preview.
+
+**File**: `WordwrapLayout.kt`
+
+```kotlin
+// In init { ... }
+if (width > 0 && text != null && text.lineCount > 0 && (rowTable?.isEmpty() ?: true)) {
+    val previewLines = min(text.lineCount, 100)
+    val rt = rowTable ?: mutableListOf<RowRegion>().also { rowTable = it }
+    for (i in 0 until previewLines) {
+        text.getLine(i)?.let { line ->
+            rt.addAll(breakLine(i, line, null))
+        }
+    }
+    updateYOffsets(0)
+}
+
+// In breakAllLines() { ... }
+if (text.lineCount <= 200) {
+    // Sync break for small files
+    ...
+    return
+}
+```
+
+### Result
+✅ **Completely eliminated the initial "normal then wrap" transition jump.**
+The editor now appears directly in the wrapped state from the first frame.
+
+## New Issue: Scrollbar "Jump" During Initialization (2026-02-02)
+
+### Issue Description
+Even with the wrap jump fixed, the scrollbar thumb would still "jump" or flicker as the document height was recalculated. Specifically, for large files, the scrollbar would initially look like it's for a very short file (based on only the 100-line preview) and then suddenly resize.
+
+### Fix Solution
+1. **Height Estimation**: Modified `WordwrapLayout.kt` to provide an estimated `layoutHeight` based on the average line height of already processed lines. This ensures that the scrollbar appearance is stable even while the background calculation is in progress, preventing the thumb from jumping or resizing drastically.
+2. **Synchronous Preview**: (From previous fix) First 20 lines are broken synchronously to ensure immediate visual wrap.
+
+**File**: `WordwrapLayout.kt`
+```kotlin
+// In init { ... }
+if (width > 0 && text != null && text.lineCount > 0 && (rowTable?.isEmpty() ?: true)) {
+    val previewLines = min(text.lineCount, 20)
+    ...
+}
+```
+
+### Result
+✅ **Smooth scrollbar adaptation.**
+The scrollbar now appears immediately and adapts its size based on the estimated total height, providing a consistent user experience during document loading.
+
 ---
 
-**Fix Date**: 2026-01-30  
-**Affected Version**: capacitor-sora-editor (Compose UI implementation)  
+**Fix Date**: 2026-02-02  
+**Affected Version**: capacitor-sora-editor  
 **Status**: ✅ Fixed and Verified

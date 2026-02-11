@@ -53,12 +53,52 @@ class WordwrapLayout(
             0f
         }
         width = (editor.width - editor.measureTextRegionOffset() - editor.extraMarginRight - miniGraphWidth * 2).toInt()
+        
+        // Fix initial wrap flicker: break first few lines synchronously if width is known
+        if (width > 0 && text != null && text.lineCount > 0 && (rowTable?.isEmpty() ?: true)) {
+            val previewLines = if (editor.forceSyncBreakLines || oldLayout == null) min(text.lineCount, editor.getInitialPreviewLines()) else 0
+            val rt = rowTable ?: mutableListOf<RowRegion>().also { rowTable = it }
+            val cachedTextRow = TextRow()
+            val cachedParams = editor.renderer.createTextRowParams()
+            for (i in 0 until previewLines) {
+                text.getLine(i)?.let { line ->
+                    rt.addAll(breakLine(i, line, null, cachedTextRow, cachedParams))
+                }
+            }
+            updateYOffsets(0)
+            editor.forceSyncBreakLines = false
+        }
+        
         breakAllLines()
     }
 
     private fun breakAllLines() {
         val text = this.text ?: return
         val editor = this.editor ?: return
+        
+        if (width <= 0) {
+            editor.setLayoutBusy(false)
+            return
+        }
+
+        // For small files, do all work synchronously to avoid any flicker
+        if (text.lineCount <= 200) {
+            val rt = rowTable ?: mutableListOf<RowRegion>().also { rowTable = it }
+            rt.clear()
+            val cachedTextRow = TextRow()
+            val cachedParams = editor.renderer.createTextRowParams()
+            for (i in 0 until text.lineCount) {
+                text.getLine(i)?.let { line ->
+                    rt.addAll(breakLine(i, line, null, cachedTextRow, cachedParams))
+                }
+            }
+            updateYOffsets(0)
+            editor.setLayoutBusy(false)
+            val touch: io.github.abc15018045126.sora.widget.EditorTouchEventHandler = editor.touchHandler!!
+            touch.scrollBy(0f, 0f)
+            return
+        }
+
         val taskCount = min(SUBTASK_COUNT, ceil(text.lineCount.toFloat() / MIN_LINE_COUNT_FOR_SUBTASK).toInt())
         val sizeEachTask = text.lineCount / taskCount
         val monitor = TaskMonitor(taskCount, object : TaskMonitor.Callback {
@@ -146,9 +186,11 @@ class WordwrapLayout(
             }
         }
         val newRegions = mutableListOf<RowRegion>()
+        val cachedTextRow = TextRow()
+        val cachedParams = editor?.renderer?.createTextRowParams()
         for (i in startLine..endLine) {
             text?.getLine(i)?.let { line ->
-                newRegions.addAll(breakLine(i, line, null))
+                newRegions.addAll(breakLine(i, line, null, cachedTextRow, cachedParams))
             }
         }
         rt.addAll(insertPosition, newRegions)
@@ -166,12 +208,35 @@ class WordwrapLayout(
         }
     }
 
-    private fun breakLine(line: Int, sequence: ContentLine, paint: Paint?): List<RowRegion> {
+    /**
+     * Refresh cached heights and y-offsets of all rows.
+     * Use this when font size is changed during scaling to avoid overlapping text.
+     */
+    fun refreshHeights() {
+        val rt = rowTable ?: return
+        val editor = this.editor ?: return
+        val lh = editor.logicalRowHeight
+        val wh = editor.wrapRowHeight
+        for (i in rt.indices) {
+            val region = rt[i]
+            val isTrailing = i == rt.size - 1 || rt[i + 1].line != region.line
+            region.height = if (isTrailing) lh else wh
+        }
+        updateYOffsets(0)
+    }
+
+    private fun breakLine(
+        line: Int,
+        sequence: ContentLine,
+        paint: Paint?,
+        cachedTextRow: TextRow? = null,
+        cachedParams: io.github.abc15018045126.sora.graphics.TextRowParams? = null
+    ): List<RowRegion> {
         val editor = this.editor ?: return emptyList()
         val p = paint ?: Paint(editor.isRenderFunctionCharacters).apply {
             set(editor.textPaint)
         }
-        val tr = TextRow()
+        val tr = cachedTextRow ?: TextRow()
         val directions = text?.getLineDirections(line) ?: return emptyList()
         tr.set(
             sequence,
@@ -182,7 +247,7 @@ class WordwrapLayout(
             directions,
             p,
             null,
-            editor.renderer.createTextRowParams()
+            cachedParams ?: editor.renderer.createTextRowParams()
         )
 
         var isRtlBased = false
@@ -353,11 +418,23 @@ class WordwrapLayout(
     override val layoutHeight: Int
         get() {
             val rt = rowTable
+            val lineCount = text?.lineCount ?: 0
+            if (lineCount == 0) return 0
+            
             if (rt == null || rt.isEmpty()) {
-                return (editor?.logicalRowHeight ?: 0) * (text?.lineCount ?: 0)
+                return (editor?.logicalRowHeight ?: 0) * lineCount
             }
-            val last = rt.last()
-            return last.yOffset + last.height
+            
+            val lastRegion = rt.last()
+            if (lastRegion.line < lineCount - 1) {
+                // Calculation in progress, estimate total height to "adapt" scrollbar
+                val processedLines = lastRegion.line + 1
+                val currentHeight = lastRegion.yOffset + lastRegion.height
+                val avgLineHeight = if (processedLines > 0) currentHeight.toDouble() / processedLines else editor?.logicalRowHeight?.toDouble() ?: 0.0
+                return (currentHeight + (lineCount - processedLines) * avgLineHeight).toInt()
+            }
+            
+            return lastRegion.yOffset + lastRegion.height
         }
 
     override fun getRowTop(row: Int): Int {
@@ -601,12 +678,14 @@ class WordwrapLayout(
             set(editor?.textPaint)
             onAttributeUpdate()
         }
+        private val cachedTextRow = TextRow()
+        private val cachedParams = editor?.renderer?.createTextRowParams()
 
         override fun compute(): WordwrapResult {
             val list = mutableListOf<RowRegion>()
             text?.runReadActionsOnLines(start, end, object : Content.ContentLineConsumer2 {
                 override fun accept(index: Int, line: ContentLine, abortFlag: Content.ContentLineConsumer2.AbortFlag) {
-                    list.addAll(breakLine(index, line, paint))
+                    list.addAll(breakLine(index, line, paint, cachedTextRow, cachedParams))
                     if (!shouldRun()) {
                         abortFlag.set = true
                     }

@@ -287,7 +287,12 @@ open class CodeEditor @JvmOverloads constructor(
     private var lastAnchorIsSelLeft = false
 
     @Volatile
-    private var layoutBusy = false
+    internal var layoutBusy = false
+
+    /**
+     * Check if the editor is currently calculating layout (e.g. word wrap)
+     */
+    fun isLayoutBusy(): Boolean = layoutBusy
 
     /**
      * @return Enabled / disabled
@@ -396,6 +401,9 @@ open class CodeEditor @JvmOverloads constructor(
     override fun isHorizontalScrollBarEnabled(): Boolean = super.isHorizontalScrollBarEnabled()
     override fun setHorizontalScrollBarEnabled(enabled: Boolean) = super.setHorizontalScrollBarEnabled(enabled)
     private var cursorAnimation = false
+    private var initialPreviewLines = 20
+    @JvmField var forceSyncBreakLines = false
+    private var isLineNumberRightOfDivider = false
 
     /**
      * @see CodeEditor.setPinLineNumber
@@ -1065,6 +1073,24 @@ open class CodeEditor @JvmOverloads constructor(
     }
 
     /**
+     * Set the order of text action menu items
+     */
+    var textActionMenuOrder: List<String>? = null
+        set(value) {
+            field = value
+            textActionWindow?.updateMenuOrderAndVisibility()
+        }
+
+    /**
+     * Set the list of hidden text action menu items
+     */
+    var textActionMenuHidden: List<String>? = null
+        set(value) {
+            field = value
+            textActionWindow?.updateMenuOrderAndVisibility()
+        }
+
+    /**
      * Inserts the given text in the editor.
      * 
      * 
@@ -1302,6 +1328,35 @@ open class CodeEditor @JvmOverloads constructor(
         }
 
     /**
+     * Get the number of lines to be broken synchronously when editor is initialized or layout is changed.
+     */
+    fun getInitialPreviewLines(): Int = initialPreviewLines
+
+    /**
+     * Set the number of lines to be broken synchronously when editor is initialized or layout is changed.
+     */
+    fun setInitialPreviewLines(lines: Int) {
+        this.initialPreviewLines = lines
+    }
+
+    /**
+     * Set whether the line number is displayed on the right side of the divider.
+     */
+    fun setLineNumberRightOfDivider(isRight: Boolean) {
+        if (this.isLineNumberRightOfDivider != isRight) {
+            this.isLineNumberRightOfDivider = isRight
+            invalidate()
+        }
+    }
+
+    /**
+     * Check if the line number is displayed on the right side of the divider.
+     */
+    fun isLineNumberRightOfDivider(): Boolean {
+        return isLineNumberRightOfDivider
+    }
+
+    /**
      * @see .setCursorAnimator
      */
 
@@ -1415,6 +1470,10 @@ open class CodeEditor @JvmOverloads constructor(
 
         val oldTextSize = this.textSizePx
         renderer.setTextSizePxDirect(size)
+        val layout = _layout
+        if (layout is io.github.abc15018045126.sora.widget.layout.WordwrapLayout) {
+            layout.refreshHeights()
+        }
         dispatchEvent(TextSizeChangeEvent(this, oldTextSize, size))
     }
 
@@ -1531,7 +1590,7 @@ open class CodeEditor @JvmOverloads constructor(
             text.getCharIndex(line, 0)
         val lineRight =
             lineLeft + text.getColumnCount(line)
-        for (i in kotlin.math.max(0, positions.lowerBoundByFirst(lineLeft) - 1)..<res.size()) {
+        for (i in kotlin.math.max(0, res.lowerBoundByFirst(lineLeft) - 1)..<res.size()) {
             val region = res.get(i)
             val start =
                 IntPair.getFirst(region)
@@ -4067,6 +4126,7 @@ open class CodeEditor @JvmOverloads constructor(
         @Nullable text: CharSequence?, reuseContentObject: Boolean,
         @Nullable extraArguments: Bundle?
     ) {
+        forceSyncBreakLines = true
         var text = text
         if (text == null) {
             text = ""

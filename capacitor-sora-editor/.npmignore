@@ -1,0 +1,22 @@
+node_modules
+dist
+*.tgz
+.DS_Store
+.npmrc
+.idea
+*.iml
+
+# Android build artifacts
+android/build
+android/.gradle
+android/.cxx
+android/local.properties
+android/java_backup
+
+# Sora-editor submodules build artifacts
+android/sora-editor/**/build
+android/sora-editor/**/.cxx
+android/sora-editor/**/.gradle
+
+# Capacitor generated
+android/capacitor.settings.gradle

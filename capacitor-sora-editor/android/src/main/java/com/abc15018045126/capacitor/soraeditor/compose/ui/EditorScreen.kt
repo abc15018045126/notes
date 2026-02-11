@@ -123,7 +123,13 @@ class EditorControl {
             } else {
                 io.github.abc15018045126.sora.widget.EditorSearcher.SearchOptions.TYPE_NORMAL
             }
-            editor?.searcher?.search(text, io.github.abc15018045126.sora.widget.EditorSearcher.SearchOptions(type, !matchCase))
+            // 清理输入文本：移除换行符和其他控制字符
+            val cleanedText = text.replace("\\r", "").replace("\\n", "").trim()
+            if (cleanedText.isEmpty()) {
+                stopSearch()
+                return
+            }
+            editor?.searcher?.search(cleanedText, io.github.abc15018045126.sora.widget.EditorSearcher.SearchOptions(type, !matchCase))
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -216,7 +222,18 @@ fun SoraEditorView(
     fontFamily: String = "Monospace",
     scrollbarColor: String = "#A0888888",
     showScrollLineInfo: Boolean = true,
-    scrollbarStyle: String = "default"
+    scrollbarStyle: String = "default",
+    isFastMode: Boolean = false,
+    initialPreviewLines: Int = 20,
+    lineNumberAlign: String = "left",
+    isLineNumberRightOfDivider: Boolean = false,
+    isLineNumberPinned: Boolean = false,
+    lineNumberColor: String = "#FF000000",
+    lineDividerColor: String = "#A0888888",
+    editorTextColor: String = "auto",
+    textActionMenuItems: List<String> = listOf("select_all", "copy", "paste", "long_select", "cut"),
+    textActionMenuHidden: List<String> = emptyList(),
+    textActionMenuBgColor: String = "auto"
 ) {
     var editorInstance by remember { mutableStateOf<CodeEditor?>(null) }
     
@@ -224,6 +241,9 @@ fun SoraEditorView(
     val isSettingTextProgrammatically = remember { mutableStateOf(false) }
     var lastAppliedFontFamily by remember { mutableStateOf("") }
     var lastAppliedHandleStyle by remember { mutableStateOf("") }
+    var lastAppliedTextActionMenuItems by remember { mutableStateOf<List<String>>(emptyList()) }
+    var lastAppliedTextActionMenuHidden by remember { mutableStateOf<List<String>>(emptyList()) }
+    var lastAppliedTextActionMenuBgColor by remember { mutableStateOf("") }
     var lastAppliedTextSize by remember { mutableStateOf(-1f) }
     var lastAppliedCursorWidth by remember { mutableStateOf(-1f) }
     var lastAppliedLineNumbers by remember { mutableStateOf<Boolean?>(null) }
@@ -231,6 +251,13 @@ fun SoraEditorView(
     var lastAppliedEditable by remember { mutableStateOf<Boolean?>(null) }
     var lastAppliedHighlightCurrentLine by remember { mutableStateOf<Boolean?>(null) }
     var lastAppliedShowScrollLineInfo by remember { mutableStateOf<Boolean?>(null) }
+    var lastAppliedFastMode by remember { mutableStateOf<Boolean?>(null) }
+    var lastAppliedInitialPreviewLines by remember { mutableStateOf<Int?>(null) }
+    var lastAppliedLineNumberAlign by remember { mutableStateOf("") }
+    var lastAppliedIsLineNumberRightOfDivider by remember { mutableStateOf<Boolean?>(null) }
+    var lastAppliedIsLineNumberPinned by remember { mutableStateOf<Boolean?>(null) }
+    var lastAppliedLineNumberColor by remember { mutableStateOf("") }
+    var lastAppliedLineDividerColor by remember { mutableStateOf("") }
 
     // Ensure we always have the latest callbacks even if factory is not re-run
     val currentOnTap by rememberUpdatedState(onTap)
@@ -368,6 +395,12 @@ fun SoraEditorView(
                         colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.BLACK)
                         colorScheme?.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.DKGRAY)
                     }
+                    
+                    if (editorTextColor != "auto" && editorTextColor.isNotEmpty()) {
+                        try {
+                            colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.parseColor(editorTextColor))
+                        } catch (e: Exception) {}
+                    }
 
                     try {
                         val searchMatchColor = android.graphics.Color.parseColor(searchMatchBackgroundColor)
@@ -425,6 +458,13 @@ fun SoraEditorView(
                         renderer?.setVerticalScrollbarThumbDrawable(null)
                         renderer?.setHorizontalScrollbarThumbDrawable(null)
                     }
+                    isCursorAnimationEnabled = !isFastMode
+                    setInitialPreviewLines(initialPreviewLines)
+                    setLineNumberPaintAlign(if (lineNumberAlign == "right") android.graphics.Paint.Align.RIGHT else if (lineNumberAlign == "center") android.graphics.Paint.Align.CENTER else android.graphics.Paint.Align.LEFT)
+                    setLineNumberRightOfDivider(isLineNumberRightOfDivider)
+                    setPinLineNumber(isLineNumberPinned)
+                    colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.parseColor(lineNumberColor))
+                    colorScheme.setColor(EditorColorScheme.LINE_DIVIDER, android.graphics.Color.parseColor(lineDividerColor))
                 } catch (e: Exception) {}
                 
                 editorInstance = this
@@ -471,6 +511,57 @@ fun SoraEditorView(
             if (lastAppliedShowScrollLineInfo != showScrollLineInfo) {
                 view.isDisplayLnPanel = showScrollLineInfo
                 lastAppliedShowScrollLineInfo = showScrollLineInfo
+            }
+            if (lastAppliedFastMode != isFastMode) {
+                view.isCursorAnimationEnabled = !isFastMode
+                lastAppliedFastMode = isFastMode
+            }
+            if (lastAppliedInitialPreviewLines != initialPreviewLines) {
+                view.setInitialPreviewLines(initialPreviewLines)
+                lastAppliedInitialPreviewLines = initialPreviewLines
+            }
+            if (lastAppliedLineNumberAlign != lineNumberAlign) {
+                view.setLineNumberPaintAlign(if (lineNumberAlign == "right") android.graphics.Paint.Align.RIGHT else if (lineNumberAlign == "center") android.graphics.Paint.Align.CENTER else android.graphics.Paint.Align.LEFT)
+                lastAppliedLineNumberAlign = lineNumberAlign
+            }
+            if (lastAppliedIsLineNumberRightOfDivider != isLineNumberRightOfDivider) {
+                view.setLineNumberRightOfDivider(isLineNumberRightOfDivider)
+                lastAppliedIsLineNumberRightOfDivider = isLineNumberRightOfDivider
+            }
+            if (lastAppliedIsLineNumberPinned != isLineNumberPinned) {
+                view.setPinLineNumber(isLineNumberPinned)
+                lastAppliedIsLineNumberPinned = isLineNumberPinned
+            }
+            if (lastAppliedLineNumberColor != lineNumberColor) {
+                try { view.colorScheme.setColor(EditorColorScheme.LINE_NUMBER, android.graphics.Color.parseColor(lineNumberColor)) } catch(e: Exception) {}
+                lastAppliedLineNumberColor = lineNumberColor
+            }
+            if (lastAppliedLineDividerColor != lineDividerColor) {
+                try { view.colorScheme.setColor(EditorColorScheme.LINE_DIVIDER, android.graphics.Color.parseColor(lineDividerColor)) } catch(e: Exception) {}
+                lastAppliedLineDividerColor = lineDividerColor
+            }
+            
+            try {
+                if (editorTextColor != "auto" && editorTextColor.isNotEmpty()) {
+                    view.colorScheme.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.parseColor(editorTextColor))
+                }
+            } catch (e: Exception) {}
+
+            if (lastAppliedTextActionMenuItems != textActionMenuItems) {
+                view.textActionMenuOrder = textActionMenuItems
+                lastAppliedTextActionMenuItems = textActionMenuItems
+            }
+            if (lastAppliedTextActionMenuHidden != textActionMenuHidden) {
+                view.textActionMenuHidden = textActionMenuHidden
+                lastAppliedTextActionMenuHidden = textActionMenuHidden
+            }
+            if (lastAppliedTextActionMenuBgColor != textActionMenuBgColor) {
+                if (textActionMenuBgColor != "auto") {
+                    try {
+                        view.colorScheme.setColor(EditorColorScheme.TEXT_ACTION_WINDOW_BACKGROUND, android.graphics.Color.parseColor(textActionMenuBgColor))
+                    } catch (e: Exception) {}
+                }
+                lastAppliedTextActionMenuBgColor = textActionMenuBgColor
             }
             
             // Update font family
@@ -536,6 +627,15 @@ fun SoraEditorView(
                 val currentLineColor = try { android.graphics.Color.parseColor(currentLineBackgroundColor) } catch (e: Exception) { 0x10000000 }
                 if (view.colorScheme?.getColor(EditorColorScheme.CURRENT_LINE) != currentLineColor) {
                     view.colorScheme?.setColor(EditorColorScheme.CURRENT_LINE, currentLineColor)
+                }
+                
+                // Re-apply text color if needed after background update (as background update might reset scheme parts or we want to ensure precedence)
+                // Actually the background update block above re-runs the luminance logic which might reset TEXT_NORMAL.
+                // So we need to re-apply editorTextColor if it's not auto.
+                if (editorTextColor != "auto" && editorTextColor.isNotEmpty()) {
+                    try {
+                        view.colorScheme?.setColor(EditorColorScheme.TEXT_NORMAL, android.graphics.Color.parseColor(editorTextColor))
+                    } catch (e: Exception) {}
                 }
 
                 val cColor = try { android.graphics.Color.parseColor(cursorColor) } catch (e: Exception) { 0xFF000000.toInt() }
@@ -760,6 +860,7 @@ fun EditorScreen(
                         fontSize = uiState.fontSize,
                         showLineNumbers = uiState.showLineNumbers,
                         wordWrap = uiState.wordWrap,
+                        isLineNumberPinned = uiState.isLineNumberPinned,
                         editable = !uiState.isReadOnly,
                         backgroundColor = uiState.backgroundColor,
                         searchMatchBackgroundColor = uiState.searchMatchBackgroundColor,
@@ -782,7 +883,17 @@ fun EditorScreen(
                         fontFamily = uiState.fontFamily,
                         scrollbarColor = uiState.scrollbarColor,
                         showScrollLineInfo = uiState.showScrollLineInfo,
-                        scrollbarStyle = uiState.scrollbarStyle
+                        scrollbarStyle = uiState.scrollbarStyle,
+                        isFastMode = uiState.isFastMode,
+                        initialPreviewLines = uiState.initialPreviewLines,
+                        lineNumberAlign = uiState.lineNumberAlign,
+                        isLineNumberRightOfDivider = uiState.isLineNumberRightOfDivider,
+                        lineNumberColor = uiState.lineNumberColor,
+                        lineDividerColor = uiState.lineDividerColor,
+                        editorTextColor = uiState.editorTextColor,
+                        textActionMenuItems = uiState.textActionMenuItems,
+                        textActionMenuHidden = uiState.textActionMenuHidden,
+                        textActionMenuBgColor = uiState.textActionMenuBgColor
                     )
                 }
                 
@@ -1176,9 +1287,36 @@ fun EditorSettingsScreen(
                 }
 
                 SettingsSwitchItem("显示行号", "在左侧显示行号", uiState.showLineNumbers) { viewModel.toggleLineNumbers(localContext) }
+                SettingsSwitchItem("固定行号", "行号固定不随行移动 (Sticky)", uiState.isLineNumberPinned) { viewModel.toggleLineNumberPinned(localContext) }
                 SettingsSwitchItem("自动换行", "自动折行显示", uiState.wordWrap) { viewModel.toggleWordWrap(localContext) }
                 SettingsSwitchItem("高亮当前行", "突出显示光标所在的行", uiState.highlightCurrentLine) { viewModel.setHighlightCurrentLine(localContext, it) }
+                SettingsSwitchItem("行号位于竖线右侧", "将行号显示在分隔线右侧（靠近代码）", uiState.isLineNumberRightOfDivider) { viewModel.setLineNumberRightOfDivider(localContext, it) }
+                
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("行号文本对齐", fontSize = 12.sp, color = Color.Gray)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        mapOf("left" to "左对齐", "center" to "居中", "right" to "右对齐").forEach { (id, label) ->
+                            Button(
+                                onClick = { viewModel.setLineNumberAlign(localContext, id) },
+                                colors = ButtonDefaults.buttonColors(containerColor = if (uiState.lineNumberAlign == id) MaterialTheme.colorScheme.primary else Color.LightGray)
+                            ) {
+                                Text(label, fontSize = 10.sp)
+                            }
+                        }
+                    }
+                }
+                
                 SettingsSwitchItem("自动保存", "编辑时自动保存", uiState.autoSave) { viewModel.setAutoSave(localContext, it) }
+                SettingsSwitchItem("极速模式", "禁用动画（如光标移动）以获得更快的响应", uiState.isFastMode) { viewModel.setFastMode(localContext, it) }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("初始加载行数 (同步): ${uiState.initialPreviewLines}", modifier = Modifier.weight(1f))
+                        Text("越多加载越慢", color = Color.Red, fontSize = 10.sp)
+                    }
+                    Slider(
+                        value = uiState.initialPreviewLines.toFloat(),
+                        onValueChange = { viewModel.setInitialPreviewLines(localContext, it.toInt()) },
+                        valueRange = 0f..200f,
+                    )
 
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("字体样式", style = MaterialTheme.typography.titleMedium)
@@ -1212,131 +1350,8 @@ fun EditorSettingsScreen(
                     SettingsSwitchItem("区分大小写", "默认区分大小写", uiState.searchMatchCase) { viewModel.setSearchMatchCase(localContext, it) }
                 }
 
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text("主题颜色自定义 (也可在下面 JSON 自由配置)", style = MaterialTheme.typography.titleMedium)
-                    val colors = listOf("#FFFFFF" to "白", "#F5F5F5" to "灰", "#E0E0E0" to "深灰", "#FFF8DC" to "米", "#E8F5E9" to "绿", "#E3F2FD" to "蓝", "#000000" to "黑")
-                    
-                    Column {
-                        Text("编辑器背景 (Editor)", fontSize = 12.sp, color = Color.Gray)
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            colors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.backgroundColor == c) { viewModel.setBackgroundColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("应用 UI 颜色 (Toolbar/Bottom)", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.weight(1f))
-                            TextButton(onClick = { 
-                                viewModel.setTocColor(localContext, uiState.uiColor)
-                                viewModel.setSearchColor(localContext, uiState.uiColor)
-                                viewModel.setMenuColor(localContext, uiState.uiColor)
-                            }) {
-                                Text("同步到所有面板", fontSize = 10.sp)
-                            }
-                        }
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            colors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.uiColor == c) { viewModel.setUiColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Text("更多菜单颜色 (More Menu)", fontSize = 12.sp, color = Color.Gray)
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            colors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.menuColor == c) { viewModel.setMenuColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Text("目录面板颜色 (TOC)", fontSize = 12.sp, color = Color.Gray)
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            colors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.tocColor == c) { viewModel.setTocColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Text("搜索面板颜色 (Search)", fontSize = 12.sp, color = Color.Gray)
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            colors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.searchColor == c) { viewModel.setSearchColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Text("搜索匹配高亮颜色 (Search Match highlight)", fontSize = 12.sp, color = Color.Gray)
-                        val matchColors = listOf(
-                            "#FFF59D" to "淡黄", 
-                            "#C8E6C9" to "淡绿", 
-                            "#FFCDD2" to "淡红", 
-                            "#B2EBF2" to "淡蓝", 
-                            "#E1BEE7" to "淡紫", 
-                            "#FFE0B2" to "淡橙", 
-                            "#BBDEFB" to "灰蓝"
-                        )
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            matchColors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.searchMatchBackgroundColor == c) { viewModel.setSearchMatchBackgroundColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column {
-                        Text("当前行高亮颜色 (Current Line)", fontSize = 12.sp, color = Color.Gray)
-                        val highlightColors = listOf(
-                            "#00000000" to "无",
-                            "#10000000" to "淡黑",
-                            "#10888888" to "淡灰",
-                            "#100000FF" to "淡蓝",
-                            "#10FF0000" to "淡红",
-                            "#1000FF00" to "淡绿",
-                            "#20FFEB3B" to "浅黄"
-                        )
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            highlightColors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.currentLineBackgroundColor == c) { viewModel.setCurrentLineBackgroundColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("光标颜色 (Cursor Color)", fontSize = 12.sp, color = Color.Gray)
-                        val cursorColors = listOf("#FF000000" to "黑", "#FF888888" to "灰", "#FF0000FF" to "蓝", "#FFFF0000" to "红", "#FF00FF00" to "绿", "#FFFB8C00" to "橙", "#FF1976D2" to "深蓝")
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            cursorColors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.cursorColor == c) { viewModel.setCursorColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("光标提手颜色 (Handle Color)", fontSize = 12.sp, color = Color.Gray)
-                        val handleColors = listOf("#FF000000" to "黑", "#FF888888" to "灰", "#FF0000FF" to "蓝", "#FFFF0000" to "红", "#FF00FF00" to "绿", "#FFFB8C00" to "橙", "#FF1976D2" to "深蓝")
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            handleColors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.handleColor == c) { viewModel.setHandleColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("滚动条颜色 (Scrollbar Color)", fontSize = 12.sp, color = Color.Gray)
-                        val scrollbarColors = listOf("#A0888888" to "默认灰", "#A0000000" to "黑", "#A0FF0000" to "红", "#A000FF00" to "绿", "#A00000FF" to "蓝", "#A0FB8C00" to "橙", "#A01976D2" to "深蓝")
-                        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            scrollbarColors.forEach { (c, l) -> 
-                                ColorOption(c, l, uiState.scrollbarColor == c) { viewModel.setScrollbarColor(localContext, c) }
-                            }
-                        }
-                    }
-
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                EditorColorSettings(uiState, viewModel, localContext)
+     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text("滚动条样式", fontSize = 12.sp, color = Color.Gray)
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             mapOf("default" to "Sora (直角)", "rounded" to "Chrome (圆角)").forEach { (id, label) ->
@@ -1402,6 +1417,94 @@ fun EditorSettingsScreen(
                             }
                         }
                     }
+
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("编辑浮动菜单 (长按/双击弹出)", style = MaterialTheme.typography.titleMedium)
+                    
+                    val allItemLabels = mapOf(
+                        "select_all" to "全选",
+                        "copy" to "复制",
+                        "paste" to "粘贴",
+                        "cut" to "剪切",
+                        "long_select" to "自由选择"
+                    )
+                    
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        uiState.textActionMenuItems.forEachIndexed { index, id ->
+                            val label = allItemLabels[id] ?: id
+                            val isHidden = id in uiState.textActionMenuHidden
+                            
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(8.dp),
+                                color = if (isHidden) Color.LightGray.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                                border = BorderStroke(1.dp, Color.LightGray.copy(alpha = 0.2f))
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    IconButton(
+                                        onClick = { viewModel.toggleTextActionMenuItemVisibility(localContext, id) },
+                                        modifier = Modifier.size(36.dp)
+                                    ) {
+                                        Icon(
+                                            if (isHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(18.dp),
+                                            tint = if (isHidden) Color.Gray else MaterialTheme.colorScheme.primary
+                                        )
+                                    }
+                                    
+                                    Text(
+                                        text = label,
+                                        modifier = Modifier.weight(1f),
+                                        fontSize = 14.sp,
+                                        color = if (isHidden) Color.Gray else Color.Unspecified
+                                    )
+                                    
+                                    IconButton(
+                                        onClick = { 
+                                            if (index > 0) {
+                                                val newList = uiState.textActionMenuItems.toMutableList()
+                                                val item = newList.removeAt(index)
+                                                newList.add(index - 1, item)
+                                                viewModel.setTextActionMenuOrder(localContext, newList)
+                                            }
+                                        },
+                                        enabled = index > 0,
+                                        modifier = Modifier.size(36.dp)
+                                    ) {
+                                        Icon(Icons.Default.ArrowUpward, null, modifier = Modifier.size(18.dp), tint = if (index > 0) Color.Gray else Color.Transparent)
+                                    }
+                                    
+                                    IconButton(
+                                        onClick = { 
+                                            if (index < uiState.textActionMenuItems.size - 1) {
+                                                val newList = uiState.textActionMenuItems.toMutableList()
+                                                val item = newList.removeAt(index)
+                                                newList.add(index + 1, item)
+                                                viewModel.setTextActionMenuOrder(localContext, newList)
+                                            }
+                                        },
+                                        enabled = index < uiState.textActionMenuItems.size - 1,
+                                        modifier = Modifier.size(36.dp)
+                                    ) {
+                                        Icon(Icons.Default.ArrowDownward, null, modifier = Modifier.size(18.dp), tint = if (index < uiState.textActionMenuItems.size - 1) Color.Gray else Color.Transparent)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    Spacer(Modifier.height(4.dp))
+                    Text("浮动菜单背景颜色", fontSize = 12.sp, color = Color.Gray)
+                    val bgColors = listOf("auto" to "默认", "#FFFFFF" to "白", "#F5F5F5" to "灰", "#000000" to "黑", "#EFEBE9" to "米", "#E8EAF6" to "蓝灰")
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        bgColors.forEach { (c, l) -> 
+                            ColorOption(c, l, uiState.textActionMenuBgColor == c) { viewModel.setTextActionMenuBgColor(localContext, c) }
+                        }
+                    }
                 }
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -1452,14 +1555,6 @@ fun SettingsSwitchItem(title: String, desc: String, checked: Boolean, onCheckedC
             Text(desc, style = MaterialTheme.typography.bodySmall)
         }
         Switch(checked = checked, onCheckedChange = onCheckedChange)
-    }
-}
-
-@Composable
-fun ColorOption(color: String, label: String, isSelected: Boolean, onClick: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(60.dp).clickable { onClick() }) {
-        Box(Modifier.size(40.dp).background(try { Color(android.graphics.Color.parseColor(color)) } catch(e:Exception) { Color.Gray }, RoundedCornerShape(20.dp)).border(if (isSelected) 2.dp else 1.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray, RoundedCornerShape(20.dp)))
-        Text(label, fontSize = 10.sp)
     }
 }
 

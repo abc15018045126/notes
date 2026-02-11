@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">notes-new</string>
-    <string name="title_activity_main">notes-new</string>
-    <string name="package_name">com.abc15018045126.notesnew</string>
-    <string name="custom_url_scheme">com.abc15018045126.notesnew</string>
-</resources>

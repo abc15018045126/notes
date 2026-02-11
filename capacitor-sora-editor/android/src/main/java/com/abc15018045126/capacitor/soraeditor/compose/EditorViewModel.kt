@@ -68,7 +68,18 @@ data class EditorUiState(
     val keyboardAdjust: Boolean = true,
     val symbolBarColor: String = "#F5F5F5",
     val symbolTextColor: String = "#FF000000",
-    val symbolBarStyle: String = "rounded" // "rounded", "flat"
+    val symbolBarStyle: String = "rounded", // "rounded", "flat"
+    val isFastMode: Boolean = false,
+    val initialPreviewLines: Int = 20,
+    val lineNumberAlign: String = "left", // "left", "right", "center"
+    val isLineNumberRightOfDivider: Boolean = false,
+    val isLineNumberPinned: Boolean = false,
+    val lineNumberColor: String = "#FF000000",
+    val lineDividerColor: String = "#A0888888",
+    val editorTextColor: String = "auto",
+    val textActionMenuItems: List<String> = listOf("select_all", "copy", "paste", "long_select", "cut"),
+    val textActionMenuHidden: List<String> = emptyList(),
+    val textActionMenuBgColor: String = "auto"
 )
 
 class EditorViewModel : ViewModel() {
@@ -151,6 +162,34 @@ class EditorViewModel : ViewModel() {
         if (_uiState.value.autoSave) {
             queueAutoSave(context)
         }
+    }
+
+    fun toggleLineNumberPinned(context: Context) {
+        _uiState.update { it.copy(isLineNumberPinned = !it.isLineNumberPinned) }
+        saveSettings(context)
+    }
+
+    fun setTextActionMenuBgColor(context: Context, color: String) {
+        _uiState.update { it.copy(textActionMenuBgColor = color) }
+        saveSettings(context)
+    }
+
+    fun setTextActionMenuOrder(context: Context, order: List<String>) {
+        _uiState.update { it.copy(textActionMenuItems = order) }
+        saveSettings(context)
+    }
+
+    fun toggleTextActionMenuItemVisibility(context: Context, id: String) {
+        _uiState.update { state ->
+            val hidden = state.textActionMenuHidden.toMutableList()
+            if (id in hidden) {
+                hidden.remove(id)
+            } else {
+                hidden.add(id)
+            }
+            state.copy(textActionMenuHidden = hidden)
+        }
+        saveSettings(context)
     }
 
     private fun queueAutoSave(context: Context) {
@@ -462,6 +501,36 @@ class EditorViewModel : ViewModel() {
         saveSettings(context)
     }
 
+    fun setFastMode(context: Context, enabled: Boolean) {
+        _uiState.update { it.copy(isFastMode = enabled) }
+        saveSettings(context)
+    }
+
+    fun setInitialPreviewLines(context: Context, lines: Int) {
+        _uiState.update { it.copy(initialPreviewLines = lines) }
+        saveSettings(context)
+    }
+
+    fun setLineNumberAlign(context: Context, align: String) {
+        _uiState.update { it.copy(lineNumberAlign = align) }
+        saveSettings(context)
+    }
+
+    fun setLineNumberRightOfDivider(context: Context, isRight: Boolean) {
+        _uiState.update { it.copy(isLineNumberRightOfDivider = isRight) }
+        saveSettings(context)
+    }
+    
+    fun setLineNumberColor(context: Context, color: String) {
+        _uiState.update { it.copy(lineNumberColor = color) }
+        saveSettings(context)
+    }
+    
+    fun setLineDividerColor(context: Context, color: String) {
+        _uiState.update { it.copy(lineDividerColor = color) }
+        saveSettings(context)
+    }
+
     fun renameFile(newName: String): Boolean {
         val currentFile = File(_uiState.value.filePath)
         val parent = currentFile.parentFile
@@ -542,7 +611,18 @@ class EditorViewModel : ViewModel() {
             keyboardAdjust = true,
             symbolBarColor = "#F5F5F5",
             symbolTextColor = "#FF000000",
-            symbolBarStyle = "rounded"
+            symbolBarStyle = "rounded",
+            isFastMode = false,
+            initialPreviewLines = 20,
+            lineNumberAlign = "left",
+            isLineNumberRightOfDivider = false,
+            isLineNumberPinned = false,
+            lineNumberColor = "#FF000000",
+            lineDividerColor = "#A0888888",
+            editorTextColor = "auto",
+            textActionMenuItems = listOf("select_all", "copy", "paste", "long_select", "cut"),
+            textActionMenuHidden = emptyList(),
+            textActionMenuBgColor = "auto"
         ) }
         saveSettings(context)
     }
@@ -594,6 +674,17 @@ class EditorViewModel : ViewModel() {
             put("symbolBarColor", _uiState.value.symbolBarColor)
             put("symbolTextColor", _uiState.value.symbolTextColor)
             put("symbolBarStyle", _uiState.value.symbolBarStyle)
+            put("isFastMode", _uiState.value.isFastMode)
+            put("initialPreviewLines", _uiState.value.initialPreviewLines)
+            put("lineNumberAlign", _uiState.value.lineNumberAlign)
+            put("isLineNumberRightOfDivider", _uiState.value.isLineNumberRightOfDivider)
+            put("isLineNumberPinned", _uiState.value.isLineNumberPinned)
+            put("lineNumberColor", _uiState.value.lineNumberColor)
+            put("lineDividerColor", _uiState.value.lineDividerColor)
+            put("editorTextColor", _uiState.value.editorTextColor)
+            put("textActionMenuItems", org.json.JSONArray(_uiState.value.textActionMenuItems))
+            put("textActionMenuHidden", org.json.JSONArray(_uiState.value.textActionMenuHidden))
+            put("textActionMenuBgColor", _uiState.value.textActionMenuBgColor)
         }
         prefs.edit().putString("settings_json", json.toString()).apply()
     }
@@ -637,7 +728,22 @@ class EditorViewModel : ViewModel() {
             keyboardAdjust = json.optBoolean("keyboardAdjust", true),
             symbolBarColor = json.optString("symbolBarColor", "#F5F5F5"),
             symbolTextColor = json.optString("symbolTextColor", "#FF000000"),
-            symbolBarStyle = json.optString("symbolBarStyle", "rounded")
+            symbolBarStyle = json.optString("symbolBarStyle", "rounded"),
+            isFastMode = json.optBoolean("isFastMode", false),
+            initialPreviewLines = json.optInt("initialPreviewLines", 20),
+            lineNumberAlign = json.optString("lineNumberAlign", "left"),
+            isLineNumberRightOfDivider = json.optBoolean("isLineNumberRightOfDivider", false),
+            isLineNumberPinned = json.optBoolean("isLineNumberPinned", false),
+            lineNumberColor = json.optString("lineNumberColor", "#FF000000"),
+            lineDividerColor = json.optString("lineDividerColor", "#A0888888"),
+            editorTextColor = json.optString("editorTextColor", "auto"),
+            textActionMenuItems = json.optJSONArray("textActionMenuItems")?.let { arr ->
+                List(arr.length()) { arr.getString(it) }
+            } ?: listOf("select_all", "copy", "paste", "long_select", "cut"),
+            textActionMenuHidden = json.optJSONArray("textActionMenuHidden")?.let { arr ->
+                List(arr.length()) { arr.getString(it) }
+            } ?: emptyList(),
+            textActionMenuBgColor = json.optString("textActionMenuBgColor", "auto")
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -681,7 +787,22 @@ class EditorViewModel : ViewModel() {
                 keyboardAdjust = json.optBoolean("keyboardAdjust", _uiState.value.keyboardAdjust),
                 symbolBarColor = json.optString("symbolBarColor", _uiState.value.symbolBarColor),
                 symbolTextColor = json.optString("symbolTextColor", _uiState.value.symbolTextColor),
-                symbolBarStyle = json.optString("symbolBarStyle", _uiState.value.symbolBarStyle)
+                symbolBarStyle = json.optString("symbolBarStyle", _uiState.value.symbolBarStyle),
+                isFastMode = json.optBoolean("isFastMode", _uiState.value.isFastMode),
+                initialPreviewLines = json.optInt("initialPreviewLines", _uiState.value.initialPreviewLines),
+                lineNumberAlign = json.optString("lineNumberAlign", _uiState.value.lineNumberAlign),
+                isLineNumberRightOfDivider = json.optBoolean("isLineNumberRightOfDivider", _uiState.value.isLineNumberRightOfDivider),
+                isLineNumberPinned = json.optBoolean("isLineNumberPinned", _uiState.value.isLineNumberPinned),
+                lineNumberColor = json.optString("lineNumberColor", _uiState.value.lineNumberColor),
+                lineDividerColor = json.optString("lineDividerColor", _uiState.value.lineDividerColor),
+                editorTextColor = json.optString("editorTextColor", _uiState.value.editorTextColor),
+                textActionMenuItems = json.optJSONArray("textActionMenuItems")?.let { arr ->
+                    List(arr.length()) { arr.getString(it) }
+                } ?: _uiState.value.textActionMenuItems,
+                textActionMenuHidden = json.optJSONArray("textActionMenuHidden")?.let { arr ->
+                    List(arr.length()) { arr.getString(it) }
+                } ?: _uiState.value.textActionMenuHidden,
+                textActionMenuBgColor = json.optString("textActionMenuBgColor", _uiState.value.textActionMenuBgColor)
             )
             saveSettings(context)
             true
@@ -727,6 +848,21 @@ class EditorViewModel : ViewModel() {
             put("symbolBarColor", _uiState.value.symbolBarColor)
             put("symbolTextColor", _uiState.value.symbolTextColor)
             put("symbolBarStyle", _uiState.value.symbolBarStyle)
-        } .toString(4)
+            put("isFastMode", _uiState.value.isFastMode)
+            put("initialPreviewLines", _uiState.value.initialPreviewLines)
+            put("lineNumberAlign", _uiState.value.lineNumberAlign)
+            put("isLineNumberRightOfDivider", _uiState.value.isLineNumberRightOfDivider)
+            put("lineNumberColor", _uiState.value.lineNumberColor)
+            put("lineDividerColor", _uiState.value.lineDividerColor)
+            put("editorTextColor", _uiState.value.editorTextColor)
+            put("textActionMenuItems", org.json.JSONArray(_uiState.value.textActionMenuItems))
+            put("textActionMenuHidden", org.json.JSONArray(_uiState.value.textActionMenuHidden))
+            put("textActionMenuBgColor", _uiState.value.textActionMenuBgColor)
+        }.toString(4)
+    }
+
+    fun setEditorTextColor(context: Context, color: String) {
+        _uiState.update { it.copy(editorTextColor = color) }
+        saveSettings(context)
     }
 }

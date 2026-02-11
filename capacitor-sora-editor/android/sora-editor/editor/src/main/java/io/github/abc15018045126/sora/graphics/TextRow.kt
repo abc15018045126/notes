@@ -42,6 +42,10 @@ class TextRow {
     private val tmpRect: RectF = RectF()
     private val tmpIndices = IntArray(4)
     private val tmpSpan: Span = SpanFactory.obtainNoExt(0, 0)
+    private val reusableRunElements = ArrayList<RowElement?>()
+    private val rowElementPool = ArrayList<RowElement>()
+    private var poolIndex = 0
+    private val reusablePointers = ListPointers(0, 0)
     private var text: ContentLine? = null
     private var directions: Directions? = null
     var textStart: Int = 0
@@ -204,7 +208,18 @@ class TextRow {
         return paint!!.findOffsetByRunAdvance(text!!, start, end, contextStart, contextEnd, isRtl, advance)
     }
 
+    private fun obtainRowElement(): RowElement {
+        if (poolIndex >= rowElementPool.size) {
+            val e = RowElement()
+            rowElementPool.add(e)
+            poolIndex++
+            return e
+        }
+        return rowElementPool[poolIndex++]
+    }
+
     private fun iterateRuns(consumer: RunElementsConsumer, reorderVisually: Boolean) {
+        poolIndex = 0
         var pointers: ListPointers? = null
         val dirs: IDirections = if (reorderVisually && text!!.mayNeedBidi()) VisualDirections(directions!!) else directions!!
         for (i in 0 until dirs.runCount) {
@@ -221,23 +236,23 @@ class TextRow {
             }
         }
         var currInlineIndex = if (pointers == null) 0 else pointers.inlineElementIndex
-        val trailingInlineRun: MutableList<RowElement?> = ArrayList()
+        reusableRunElements.clear()
         val elements = inlineElements
         if (elements != null) {
             while (currInlineIndex < elements.size && getExpectedInlayHintColumn(elements[currInlineIndex]) == textEnd) {
-                val e = RowElement()
+                val e = obtainRowElement()
                 e.type = RowElementTypes.INLAY_HINT
                 e.displayColumnPosition = textEnd
                 e.inlayHint = elements[currInlineIndex++]
-                trailingInlineRun.add(e)
+                reusableRunElements.add(e)
             }
         }
-        if (trailingInlineRun.isNotEmpty()) {
+        if (reusableRunElements.isNotEmpty()) {
             if (pointers == null) {
                 pointers = seekStartIndices(textEnd)
             }
             pointers.inlineElementIndex = currInlineIndex
-            consumer.accept(trailingInlineRun, false, pointers)
+            consumer.accept(reusableRunElements, false, pointers)
         }
     }
 
@@ -274,7 +289,9 @@ class TextRow {
                 inlineIndex++
             }
         }
-        return ListPointers(spanIndex, inlineIndex)
+        reusablePointers.spanIndex = spanIndex
+        reusablePointers.inlineElementIndex = inlineIndex
+        return reusablePointers
     }
 
     private fun generateAndConsumeSingleRun(
@@ -284,7 +301,7 @@ class TextRow {
         pointers: ListPointers,
         consumer: RunElementsConsumer
     ): Boolean {
-        val runElements: MutableList<RowElement?> = ArrayList()
+        reusableRunElements.clear()
         var lastEndIndex = segmentStart
         val localInline = inlineElements
         while (true) {
@@ -293,7 +310,7 @@ class TextRow {
             ) {
                 val inlay = localInline[pointers.inlineElementIndex]
                 val position = getExpectedInlayHintColumn(inlay)
-                val element = RowElement()
+                val element = obtainRowElement()
                 if (lastEndIndex == position) {
                     pointers.inlineElementIndex++
                     element.type = RowElementTypes.INLAY_HINT
@@ -306,20 +323,20 @@ class TextRow {
                     element.isRtlText = isRtl
                     lastEndIndex = position
                 }
-                runElements.add(element)
+                reusableRunElements.add(element)
             } else if (lastEndIndex < segmentEnd) {
-                val element = RowElement()
+                val element = obtainRowElement()
                 element.type = RowElementTypes.TEXT
                 element.startColumn = lastEndIndex
                 element.endColumn = segmentEnd
                 element.isRtlText = isRtl
                 lastEndIndex = segmentEnd
-                runElements.add(element)
+                reusableRunElements.add(element)
             } else {
                 break
             }
         }
-        val result = consumer.accept(runElements, isRtl, pointers)
+        val result = consumer.accept(reusableRunElements, isRtl, pointers)
         val localSpans = spans!!
         val spansSize = localSpans.size
         while (pointers.spanIndex + 1 < spansSize && localSpans[pointers.spanIndex + 1].column <= segmentEnd) {
@@ -699,7 +716,20 @@ class TextRow {
         tmpIndices[1] = paintEnd
         tmpIndices[2] = selectionStartLocal
         tmpIndices[3] = selectionEndLocal
-        Arrays.sort(tmpIndices)
+        // Manual sort of 4 elements (optimized for typical selection order)
+        var a = tmpIndices[0]
+        var b = tmpIndices[1]
+        var c = tmpIndices[2]
+        var d = tmpIndices[3]
+        if (a > b) { val t = a; a = b; b = t }
+        if (c > d) { val t = c; c = d; d = t }
+        if (a > c) { val t = a; a = c; c = t }
+        if (b > d) { val t = b; b = d; d = t }
+        if (b > c) { val t = b; b = c; c = t }
+        tmpIndices[0] = a
+        tmpIndices[1] = b
+        tmpIndices[2] = c
+        tmpIndices[3] = d
         var advance = 0f
         var i = 0
         while (i + 1 < tmpIndices.size) {

@@ -2,6 +2,7 @@ package io.github.abc15018045126.sora.graphics
 
 import android.util.SparseArray
 import io.github.abc15018045126.sora.text.CharArrayWrapper
+import io.github.abc15018045126.sora.text.ContentLine
 import io.github.abc15018045126.sora.text.FunctionCharacters
 import java.util.Arrays
 import kotlin.math.ceil
@@ -18,6 +19,7 @@ class SingleCharacterWidths(private val tabWidth: Int) {
     val buffer: CharArray = CharArray(10)
     
     private val cache: FloatArray = FloatArray(65536)
+    private val cacheScaled: LongArray = LongArray(65536)
     
     var isHandleFunctionCharacters: Boolean = false
 
@@ -26,6 +28,7 @@ class SingleCharacterWidths(private val tabWidth: Int) {
      */
     fun clearCache() {
         Arrays.fill(cache, 0f)
+        Arrays.fill(cacheScaled, 0L)
         codePointWidths.clear()
     }
 
@@ -46,6 +49,19 @@ class SingleCharacterWidths(private val tabWidth: Int) {
             cache[char.code] = width
         }
         return width * rate
+    }
+
+    private fun getScaledWidth(ch: Char, p: Paint): Long {
+        val code = ch.code
+        if (code >= 65536) return 0 // Should be handled by emoji/surrogate logic
+        
+        var width = cacheScaled[code]
+        if (width == 0L) {
+            val w = measureChar(ch, p)
+            width = ceil(w * PRECISION).toLong()
+            cacheScaled[code] = width
+        }
+        return width
     }
 
     /**
@@ -80,6 +96,9 @@ class SingleCharacterWidths(private val tabWidth: Int) {
      * Measure text
      */
     fun measureText(str: CharSequence, start: Int, end: Int, p: Paint): Float {
+        if (str is ContentLine) {
+            return measureText(str.backingCharArray, start, end, p)
+        }
         var width: Long = 0
         var i = start
         while (i < end) {
@@ -104,10 +123,15 @@ class SingleCharacterWidths(private val tabWidth: Int) {
             } else if (isHandleFunctionCharacters && FunctionCharacters.isEditorFunctionChar(ch)) {
                 val name = FunctionCharacters.getNameForFunctionCharacter(ch)
                 for (j in 0 until name.length) {
-                    width += ceil((measureChar(name[j], p) * PRECISION)).toLong()
+                    val w = getScaledWidth(name[j], p)
+                    width += w
                 }
             } else {
-                width += ceil((measureChar(ch, p) * PRECISION)).toLong()
+                var w = cacheScaled[ch.code]
+                if (w == 0L) {
+                    w = getScaledWidth(ch, p)
+                }
+                width += w
             }
             i++
         }
